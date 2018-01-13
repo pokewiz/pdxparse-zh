@@ -3136,9 +3136,8 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgIsElector {scriptMessageYn = _yn}
             -> mconcat
-                [ "Is"
-                , toMessage (ifThenElseT _yn "" " ''not''")
-                , " an Elector of the Holy Roman Empire"
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "是神圣罗马帝国的选帝侯"
                 ]
         MsgNoHREReforms
             -> "No reforms have been passed in the Holy Roman Empire"
@@ -3489,12 +3488,12 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " {{DLC-only|Church power}}"
+                , " {{DLC-only|教会力量}}"
                 ]
         MsgPrestige {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
-                , " Prestige is at least "
+                , " 威望至少为 "
                 , toMessage (colourNumSign True _amt)
                 ]
         MsgYearlyPrestige {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
@@ -3527,8 +3526,8 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgNormalOrHistoricalNations {scriptMessageYn = _yn}
             -> mconcat
-                [ toMessage (ifThenElseT _yn "Playing" "''Not'' playing")
-                , " with normal or historical nations"
+                [ toMessage (ifThenElseT _yn "" "'''未'''")
+                , "使用一般或历史国家"
                 ]
         MsgIsCustomNation {scriptMessageYn = _yn}
             -> mconcat
