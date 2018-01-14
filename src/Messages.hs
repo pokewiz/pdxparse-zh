@@ -49,6 +49,12 @@ data ScriptMessage
     | MsgDiscoverProvince {scriptMessageWhat :: Text}
     | MsgHasInstitution {scriptMessageIcon :: Text, scriptMessageWhat :: Text}
     | MsgUsesReligiousIcons {scriptMessageYn :: Bool}
+    | MsgHasEmptyAdjacentProvince {scriptMessageYn :: Bool}
+    | MsgHasConsort {scriptMessageYn :: Bool}
+    | MsgIsinCoalition {scriptMessageYn :: Bool}
+    | MsgIsState {scriptMessageYn :: Bool}
+    | MsgIsEmperorOfChina {scriptMessageYn :: Bool}
+    | MsgIsHeirLeader {scriptMessageYn :: Bool}
     | MsgYes {scriptMessageIcon :: Text}
     | MsgNo {scriptMessageIcon :: Text}
     | MsgAddCardinal
@@ -4873,6 +4879,37 @@ instance RenderMessage Script ScriptMessage where
                 , toMessage (roundNum _amt)
                 , " 进攻性"
                 ]
+        MsgHasEmptyAdjacentProvince {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "拥有" "'''没有'''")
+                , "相邻的未殖民省份"
+                ]
+        MsgHasConsort {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "拥有" "'''没有'''")
+                , "配偶"
+                ]
+        MsgIsinCoalition {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "在部落联盟中"
+                ]
+        MsgIsState {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "是直属州"
+                ]
+        MsgIsEmperorOfChina {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "是中国皇帝"
+                ]
+        MsgIsHeirLeader {scriptMessageYn = _yn}
+            -> mconcat
+                [ "继承人"
+                , toMessage (ifThenElseT _yn "" "'''不'''")
+                , "是将领"
+                ]                              
 type IndentedMessage = (Int, ScriptMessage)
 type IndentedMessages = [IndentedMessage]
 
