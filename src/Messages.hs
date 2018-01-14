@@ -1279,7 +1279,7 @@ instance RenderMessage Script ScriptMessage where
                 , " 几率："
                 ]
         MsgRandom
-            -> "One of the following at random:"
+            -> "以下随机之一："
         MsgChangeGovernment {scriptMessageWhat = _what}
             -> mconcat
                 [ "改变政体为"
