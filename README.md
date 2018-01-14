@@ -3,4 +3,4 @@
 # 用法
 见[原版页面](https://github.com/HairyDude/pdxparse)的介绍。
 # English
-This program is made by [@HairyDude](https://github.com/HairyDude)). I'm making some localization files for making it supports Chinese and modifying some files to make it supports new conditions added in the latest version.
+This program is made by [@HairyDude](https://github.com/HairyDude). I'm making some localization files for making it supports Chinese and modifying some files to make it supports new conditions added in the latest version.
