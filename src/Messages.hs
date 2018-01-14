@@ -4762,19 +4762,19 @@ instance RenderMessage Script ScriptMessage where
                 , _icon
                 , " "
                 , toMessage (colourNum True _amt)
-                , " 腐败"
+                , " 腐败度"
                 ]
         MsgYearlyCorruptionIncrease {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " 年度腐败增长"
+                , " 年度腐败度增长"
                 ]
         MsgCorruption {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
-                , " 腐败至少为 "
+                , " 腐败度至少为 "
                 , toMessage (roundNum _amt)
                 ]
         MsgIsEmpty {scriptMessageYn = _yn}
@@ -4850,13 +4850,13 @@ instance RenderMessage Script ScriptMessage where
                 , _icon
                 , " "
                 , toMessage (colourNum True _amt)
-                , " 残暴性"
+                , " 狂暴性"
                 ]
         MsgNativeFerocity {scriptMessageAmt = _amt}
             -> mconcat
                 [ "拥有至少 "
                 , toMessage (roundNum _amt)
-                , " 残暴性"
+                , " 狂暴性"
                 ]
         MsgGaineNativeHostileness {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
