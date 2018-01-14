@@ -191,6 +191,12 @@ ppHandlers = Tr.fromList
         ,("add_corruption"               , numericIcon "corruption" MsgGainCorruption)
         ,("yearly_corruption_increase"   , numericIcon "corruption" MsgYearlyCorruptionIncrease)
         ,("has_institution"              , withLocAtomIcon MsgHasInstitution)
+        ,("has_consort"                  , withBool MsgHasConsort)
+        ,("has_empty_adjacent_province"  , withBool MsgHasEmptyAdjacentProvince)
+        ,("is_state"                     , withBool MsgIsState)
+        ,("is_heir_leader"               , withBool MsgIsHeirLeader)
+        ,("is_in_coalition"              , withBool MsgIsinCoalition)
+        ,("is_emperor_of_china"          , withBool MsgIsEmperorOfChina)
         -- Numbers
         ,("add_authority"                    , numeric MsgGainAuth) -- Inti
         ,("add_doom"                         , numeric MsgGainDoom)
