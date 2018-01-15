@@ -197,6 +197,14 @@ ppHandlers = Tr.fromList
         ,("is_heir_leader"               , withBool MsgIsHeirLeader)
         ,("is_in_coalition"              , withBool MsgIsinCoalition)
         ,("is_emperor_of_china"          , withBool MsgIsEmperorOfChina)
+        ,("has_owner_accepted_culture"   , withBool MsgHasOwnerAcceptedCulture)
+        ,("has_active_debate"            , withBool MsgHasActiveDebate)
+        ,("is_backing_current_issue"     , withBool MsgIsBackingCurrentIssue)
+        ,("is_in_capital_area"           , withBool MsgIsInCapitalArea)
+        ,("add_mandate_effect"           , withBool MsgAddMandateEffect)
+        ,("reduce_mandate_effect"        , withBool MsgReduceMandateEffect)
+        ,("add_meritocracy_effect"       , withBool MsgAddMeritocracyEffect)
+        ,("reduce_meritocracy_effect"    , withBool MsgReduceMeritocracyEffect)
         -- Numbers
         ,("add_authority"                    , numeric MsgGainAuth) -- Inti
         ,("add_doom"                         , numeric MsgGainDoom)
