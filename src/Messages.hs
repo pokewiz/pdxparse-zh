@@ -850,7 +850,7 @@ instance RenderMessage Script ScriptMessage where
                 , _icon
                 , " "
                 , toMessage (colourNum True _amt)
-                , " 陆军点数"
+                , " 军事点数"
                 ]
         MsgGainNavyTradition {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -3015,7 +3015,7 @@ instance RenderMessage Script ScriptMessage where
         MsgSpawnRebels {scriptMessageRtype = _rtype, scriptMessageSize = _size, scriptMessageFriend = _friend, scriptMessageLeader = _leader, scriptMessageWin = _win, scriptMessageProgress = _progress}
             -> mconcat
                 [ _rtype
-                , "（ "
+                , "（"
                 , toMessage (roundNum _size)
                 , "规模）"
                 , _friend
