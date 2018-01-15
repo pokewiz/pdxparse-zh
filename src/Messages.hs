@@ -55,6 +55,14 @@ data ScriptMessage
     | MsgIsState {scriptMessageYn :: Bool}
     | MsgIsEmperorOfChina {scriptMessageYn :: Bool}
     | MsgIsHeirLeader {scriptMessageYn :: Bool}
+    | MsgHasOwnerAcceptedCulture {scriptMessageYn :: Bool}
+    | MsgHasActiveDebate {scriptMessageYn :: Bool}
+    | MsgIsBackingCurrentIssue {scriptMessageYn :: Bool}
+    | MsgIsInCapitalArea {scriptMessageYn :: Bool}
+    | MsgAddMandateEffect {scriptMessageYn :: Bool}
+    | MsgReduceMandateEffect {scriptMessageYn :: Bool}
+    | MsgReduceMeritocracyEffect {scriptMessageYn :: Bool}
+    | MsgAddMeritocracyEffect {scriptMessageYn :: Bool}
     | MsgYes {scriptMessageIcon :: Text}
     | MsgNo {scriptMessageIcon :: Text}
     | MsgAddCardinal
@@ -4909,7 +4917,48 @@ instance RenderMessage Script ScriptMessage where
                 [ "继承人"
                 , toMessage (ifThenElseT _yn "" "'''不'''")
                 , "是将领"
-                ]                              
+                ]
+        MsgHasOwnerAcceptedCulture {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "是所有者可接受的文化"
+                ]
+        MsgIsBackingCurrentIssue {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "支持当前的议案"
+                ]   
+        MsgIsInCapitalArea {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "位于首都区域"
+                ]
+        MsgHasActiveDebate {scriptMessageYn = _yn}
+            -> mconcat
+                [ "国会"
+                , toMessage (ifThenElseT _yn "" "'''不'''")
+                , "存在辩论"
+                ]   
+        MsgReduceMeritocracyEffect {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "{{reduce_meritocracy_effect}}"
+                ]    
+        MsgAddMeritocracyEffect {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "{{add_meritocracy_effect}}"
+                ]   
+        MsgReduceMandateEffect {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "{{reduce_mandate_effect}}"
+                ]  
+        MsgAddMandateEffect {scriptMessageYn = _yn}
+            -> mconcat
+                [ toMessage (ifThenElseT _yn "" "'''不'''")
+                , "{{add_mandate_effect}}"
+                ]              
 type IndentedMessage = (Int, ScriptMessage)
 type IndentedMessages = [IndentedMessage]
 
