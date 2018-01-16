@@ -205,6 +205,17 @@ ppHandlers = Tr.fromList
         ,("reduce_mandate_effect"        , withBool MsgReduceMandateEffect)
         ,("add_meritocracy_effect"       , withBool MsgAddMeritocracyEffect)
         ,("reduce_meritocracy_effect"    , withBool MsgReduceMeritocracyEffect)
+        ,("current_age"                  , withLocAtomIcon MsgCurrentAge)
+        ,("has_climate"                  , withLocAtomIcon MsgHasClimate)
+        ,("add_building"                 , withLocAtomIcon MsgAddBuilding)
+        ,("has_personal_deity"           , withLocAtom MsgHasPersonalDeity)
+        ,("ruler_has_personality"        , withLocAtom MsgRulerHasPersonality)
+        ,("remove_ruler_personality"     , withLocAtom MsgRemoveRulerPersonality)
+        ,("has_church_aspect"            , withLocAtom MsgHasChurchAspect)
+        ,("remove_church_aspect"         , withLocAtom MsgRemoveChurchAspect)
+        ,("imperial_mandate"             , numericIcon "mandate" MsgImperialMandate)
+        ,("prosperity"                   , numericIcon "prosperity" MsgProsperity)
+        ,("meritocracy"                  , numericIcon "meritocracy" MsgMeritocracy)
         -- Numbers
         ,("add_authority"                    , numeric MsgGainAuth) -- Inti
         ,("add_doom"                         , numeric MsgGainDoom)

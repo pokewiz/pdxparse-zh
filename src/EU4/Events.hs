@@ -354,9 +354,9 @@ pp_option evtid hidden triggered opt = do
                 ,"| effect =", PP.line, effects_pp'd, PP.line]
                 ++ (if triggered then
                         maybe
-                            ["| trigger = Always enabled:", PP.line] -- no trigger
+                            ["| trigger = 总是可用：", PP.line] -- no trigger
                         (\trigger_pp'd ->
-                            ["| trigger = Enabled if:", PP.line -- trigger
+                            ["| trigger = 满足则可用：", PP.line -- trigger
                             ,trigger_pp'd, PP.line]
                         ) mtrigger_pp'd
                     else [])
