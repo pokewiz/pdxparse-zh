@@ -75,6 +75,14 @@ data ScriptMessage
     | MsgImperialMandate {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
     | MsgProsperity {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
     | MsgMeritocracy {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
+    | MsgChurchPower {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
+    | MsgNumOfSubjects {scriptMessageAmt :: Double}
+    | MsgTechDifference {scriptMessageAmt :: Double}
+    | MsgRulerAge {scriptMessageAmt :: Double}
+    | MsgNumOfAspects {scriptMessageAmt :: Double}
+    | MsgColony {scriptMessageAmt :: Double}
+    | MsgProvinceTradePower {scriptMessageAmt :: Double}
+    | MsgConvertFemaleHeirToGeneral {scriptMessageAmt :: Double}
     | MsgYes {scriptMessageIcon :: Text}
     | MsgNo {scriptMessageIcon :: Text}
     | MsgAddCardinal
@@ -5050,6 +5058,55 @@ instance RenderMessage Script ScriptMessage where
                 , " "
                 , toMessage (reducedNum plainPc _amt)
                 , " 贤能值"
+                ]
+        MsgChurchPower {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
+            -> mconcat
+                [ "拥有至少 "
+                , _icon
+                , " "
+                , toMessage (reducedNum plainPc _amt)
+                , " 教会力量"
+                ]
+        MsgNumOfSubjects {scriptMessageAmt = _amt}
+            -> mconcat
+                [ "拥有至少"
+                , toMessage (roundNum _amt)
+                , "个附属国"
+                ]
+        MsgTechDifference {scriptMessageAmt = _amt}
+            -> mconcat
+                [ "拥有至少"
+                , toMessage (roundNum _amt)
+                , "级科技差异"
+                ]
+        MsgRulerAge {scriptMessageAmt = _amt}
+            -> mconcat
+                [ "君主至少"
+                , toMessage (roundNum _amt)
+                , "岁"
+                ]
+        MsgNumOfAspects {scriptMessageAmt = _amt}
+            -> mconcat
+                [ "拥有至少"
+                , toMessage (roundNum _amt)
+                , "个教会信条"
+                ]
+        MsgColony {scriptMessageAmt = _amt}
+            -> mconcat
+                [ "拥有至少"
+                , toMessage (roundNum _amt)
+                , "块殖民地"
+                ]
+        MsgProvinceTradePower {scriptMessageAmt = _amt}
+            -> mconcat
+                [ "省份贸易力量至少为"
+                , toMessage (roundNum _amt)
+                ]
+        MsgConvertFemaleHeirToGeneral {scriptMessageAmt = _amt}
+            -> mconcat
+                [ "使女性继承人成为"
+                , toMessage (roundNum _amt)
+                , "传统所招募的将军"
                 ]
 type IndentedMessage = (Int, ScriptMessage)
 type IndentedMessages = [IndentedMessage]
