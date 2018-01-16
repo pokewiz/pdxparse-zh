@@ -4171,7 +4171,7 @@ instance RenderMessage Script ScriptMessage where
                 , _icon
                 , " "
                 , toMessage (colourNum True _amt)
-                , " fervor"
+                , " 狂热"
                 ]
         MsgGainChurchPower {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -4180,7 +4180,7 @@ instance RenderMessage Script ScriptMessage where
                 , _icon
                 , " "
                 , toMessage (colourNum True _amt)
-                , " church power"
+                , " 教会力量"
                 ]
         MsgIncomeFromVassals {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
