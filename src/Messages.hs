@@ -63,6 +63,18 @@ data ScriptMessage
     | MsgReduceMandateEffect {scriptMessageYn :: Bool}
     | MsgReduceMeritocracyEffect {scriptMessageYn :: Bool}
     | MsgAddMeritocracyEffect {scriptMessageYn :: Bool}
+    | MsgCurrentAge {scriptMessageIcon :: Text, scriptMessageWhat :: Text}
+    | MsgHasClimate {scriptMessageIcon :: Text, scriptMessageWhat :: Text}
+    | MsgAddBuilding {scriptMessageIcon :: Text, scriptMessageWhat :: Text}
+    | MsgHasPersonalDeity {scriptMessageWhat :: Text}
+    | MsgRulerHasPersonality {scriptMessageWhat :: Text}
+    | MsgRemoveRulerPersonality {scriptMessageWhat :: Text}
+    | MsgHasChurchAspect {scriptMessageWhat :: Text}
+    | MsgRemoveChurchAspect {scriptMessageWhat :: Text}
+    | MsgAddRulerPersonality {scriptMessageWhat :: Text}
+    | MsgImperialMandate {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
+    | MsgProsperity {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
+    | MsgMeritocracy {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
     | MsgYes {scriptMessageIcon :: Text}
     | MsgNo {scriptMessageIcon :: Text}
     | MsgAddCardinal
@@ -1954,24 +1966,24 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgAlliedWith {scriptMessageWhom = _whom}
             -> mconcat
-                [ "是"
+                [ "是 "
                 , _whom
                 , "的盟友"
                 ]
         MsgCedeProvinceTo {scriptMessageWhom = _whom}
             -> mconcat
-                [ "割让省份给"
+                [ "割让省份给 "
                 , _whom
                 ]
         MsgControlledBy {scriptMessageWhom = _whom}
             -> mconcat
-                [ "省份由"
+                [ "省份由 "
                 , _whom
                 , "控制"
                 ]
         MsgDefensiveWarAgainst {scriptMessageWhom = _whom}
             -> mconcat
-                [ "处于对"
+                [ "处于对 "
                 , _whom
                 , "的防卫战中"
                 ]
@@ -2014,13 +2026,13 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgNeighbors {scriptMessageWhom = _whom}
             -> mconcat
-                [ "与"
+                [ "与 "
                 , _whom
                 , "接壤"
                 ]
         MsgIsSubjectOf {scriptMessageWhom = _whom}
             -> mconcat
-                [ "是"
+                [ "是 "
                 , _whom
                 , "的附属国"
                 ]
@@ -2070,19 +2082,19 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgTruceWith {scriptMessageWhom = _whom}
             -> mconcat
-                [ "拥有与"
+                [ "拥有与 "
                 , _whom
                 , "的和约"
                 ]
         MsgAtWarWith {scriptMessageWhom = _whom}
             -> mconcat
-                [ "处于与"
+                [ "处于与 "
                 , _whom
                 , "的战争中"
                 ]
         MsgMakeWhitePeace {scriptMessageWhom = _whom}
             -> mconcat
-                [ "签署与"
+                [ "签署与 "
                 , _whom
                 , "的无条件和平和约"
                 ]
@@ -3170,7 +3182,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgIsLeagueEnemy {scriptMessageWhom = _whom}
             -> mconcat
-                [ "在于"
+                [ "在于 "
                 , _whom
                 , "对立的宗教联盟中"
                 ]
@@ -3658,7 +3670,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgChangeTag {scriptMessageWho = _who}
             -> mconcat
-                [ "国家成为"
+                [ "国家成为 "
                 , _who
                 ]
         MsgSetInEmpire {scriptMessageYn = _yn}
@@ -3944,7 +3956,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgCreateAlliance {scriptMessageWhom = _whom}
             -> mconcat
-                [ "建立与"
+                [ "建立与 "
                 , _whom
                 , "的军事同盟"
                 ]
@@ -3988,25 +4000,25 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgJuniorUnionWith {scriptMessageWhom = _whom}
             -> mconcat
-                [ "是与"
+                [ "是与 "
                 , _whom
                 , "的联合统治中被统治的一方"
                 ]
         MsgSeniorUnionWith {scriptMessageWhom = _whom}
             -> mconcat
-                [ "是与"
+                [ "是与 "
                 , _whom
                 , "的联合统治中统治的一方"
                 ]
         MsgVassalOf {scriptMessageWhom = _whom}
             -> mconcat
-                [ "是"
+                [ "是 "
                 , _whom
                 , "的附庸国"
                 ]
         MsgOverlordOf {scriptMessageWhom = _whom}
             -> mconcat
-                [ "是"
+                [ "是 "
                 , _whom
                 , "的宗主国"
                 ]
@@ -4095,7 +4107,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgFreeVassal {scriptMessageWhom = _whom}
             -> mconcat
-                [ "作为独立国家释放附庸国"
+                [ "作为独立国家释放附庸国 "
                 , _whom
                 ]
         MsgHasMissionary {scriptMessageYn = _yn}
@@ -4958,7 +4970,87 @@ instance RenderMessage Script ScriptMessage where
             -> mconcat
                 [ toMessage (ifThenElseT _yn "" "'''不'''")
                 , "{{add_mandate_effect}}"
-                ]              
+                ]           
+        MsgCurrentAge {scriptMessageIcon = _icon, scriptMessageWhat = _what}
+            -> mconcat
+                [ "正处于 "
+                , _icon
+                , " "
+                , _what
+                ]   
+        MsgHasClimate {scriptMessageIcon = _icon, scriptMessageWhat = _what}
+            -> mconcat
+                [ "拥有 "
+                , _icon
+                , " "
+                , _what
+                , "气候"
+                ]  
+        MsgAddBuilding {scriptMessageIcon = _icon, scriptMessageWhat = _what}
+            -> mconcat
+                [ "添加 "
+                , _icon
+                , " "
+                , _what
+                ]
+        MsgHasPersonalDeity {scriptMessageWhat = _what}
+            -> mconcat
+                [ "拥有"
+                , _what
+                , "特质"
+                ]
+        MsgRulerHasPersonality {scriptMessageWhat = _what}
+            -> mconcat
+                [ "君主拥有"
+                , _what
+                , "特质"
+                ]
+        MsgAddRulerPersonality {scriptMessageWhat = _what}
+            -> mconcat
+                [ "君主获得"
+                , _what
+                , "特质"
+                ]
+        MsgRemoveRulerPersonality {scriptMessageWhat = _what}
+            -> mconcat
+                [ "君主移除"
+                , _what
+                , "特质"
+                ]
+        MsgHasChurchAspect {scriptMessageWhat = _what}
+            -> mconcat
+                [ "拥有教会信条"
+                , _what
+                ]
+        MsgRemoveChurchAspect {scriptMessageWhat = _what}
+            -> mconcat
+                [ "移除教会信条"
+                , _what
+                ]
+        MsgImperialMandate {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
+            -> mconcat
+                [ "拥有至少 "
+                , _icon
+                , " "
+                , toMessage (reducedNum plainPc _amt)
+                , " 天命值"
+                ]
+        MsgProsperity {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
+            -> mconcat
+                [ "拥有至少 "
+                , _icon
+                , " "
+                , toMessage (reducedNum plainPc _amt)
+                , " 繁荣度"
+                ]
+        MsgMeritocracy {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
+            -> mconcat
+                [ "拥有至少 "
+                , _icon
+                , " "
+                , toMessage (reducedNum plainPc _amt)
+                , " 贤能值"
+                ]
 type IndentedMessage = (Int, ScriptMessage)
 type IndentedMessages = [IndentedMessage]
 
