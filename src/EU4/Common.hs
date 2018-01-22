@@ -208,7 +208,7 @@ ppHandlers = Tr.fromList
         ,("current_age"                      , withLocAtomIcon MsgCurrentAge)
         ,("has_climate"                      , withLocAtomIcon MsgHasClimate)
         ,("add_building"                     , withLocAtomIcon MsgAddBuilding)
-        ,("has_personal_deity"               , withLocAtom MsgHasPersonalDeity)
+        ,("has_personal_deity"               , withLocAtomIcon MsgHasPersonalDeity)
         ,("ruler_has_personality"            , withLocAtom MsgRulerHasPersonality)
         ,("remove_ruler_personality"         , withLocAtom MsgRemoveRulerPersonality)
         ,("has_church_aspect"                , withLocAtom MsgHasChurchAspect)
