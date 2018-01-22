@@ -66,7 +66,7 @@ data ScriptMessage
     | MsgCurrentAge {scriptMessageIcon :: Text, scriptMessageWhat :: Text}
     | MsgHasClimate {scriptMessageIcon :: Text, scriptMessageWhat :: Text}
     | MsgAddBuilding {scriptMessageIcon :: Text, scriptMessageWhat :: Text}
-    | MsgHasPersonalDeity {scriptMessageWhat :: Text}
+    | MsgHasPersonalDeity {scriptMessageIcon :: Text, scriptMessageWhat :: Text}
     | MsgRulerHasPersonality {scriptMessageWhat :: Text}
     | MsgRemoveRulerPersonality {scriptMessageWhat :: Text}
     | MsgHasChurchAspect {scriptMessageWhat :: Text}
@@ -833,7 +833,7 @@ instance RenderMessage Script ScriptMessage where
                 , _icon
                 , " "
                 , toMessage (colourNum True _amt)
-                , " 神权度"
+                , " 奉献度"
                 ]
         MsgGainHordeUnity {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -2304,6 +2304,7 @@ instance RenderMessage Script ScriptMessage where
                 , _whom
                 , "的宣战理由 "
                 , _cbtype
+                , " "
                 , toMessage (roundNum _months)
                 , " 个月"
                 ]
@@ -2381,7 +2382,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , _who
-                , " "
+                , "阶层"
                 , gainsOrLoses _amt
                 , " "
                 , toMessage (colourNum True _amt)
@@ -2392,7 +2393,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , _who
-                , " "
+                , "阶层"
                 , gainsOrLoses _amt
                 , " "
                 , toMessage (plainNum _amt)
@@ -2403,7 +2404,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , _who
-                , " 获得忠诚度修正 "
+                , "阶层获得忠诚度修正 "
                 , toMessage (iquotes _what)
                 , " ("
                 , toMessage (colourNum True _amt)
@@ -2415,7 +2416,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , _who
-                , " 获得影响力修正 "
+                , "阶层获得影响力修正 "
                 , toMessage (iquotes _what)
                 , " ("
                 , toMessage (colourNum True _amt)
@@ -3453,13 +3454,13 @@ instance RenderMessage Script ScriptMessage where
                 , " {{DLC-only|Development cost}}"
                 ]
         MsgGainReligiousCB
-            -> "{{icon|cb on religious enemies|28px}} Gain permanent \"Holy War\" and \"Purging of Heresy\" [[Casus Belli]] against heathens and heretics respectively."
+            -> "{{icon|cb on religious enemies|28px}} 获得对异教和异端的永久[[宣战理由]]，分别为\"圣战\"和\"清除异端\"。"
         MsgMissionaries {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Missionaries"
+                , " 传教士"
                 ]
         MsgStabilityCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -3473,7 +3474,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Missionary strength"
+                , " 传教力量"
                 ]
         MsgToleranceHeathen {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -3494,28 +3495,28 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Tolerance of the true faith"
+                , " 正统信仰容忍"
                 ]
         MsgYearlyPapalInfluence {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Yearly papal influence"
+                , " 年度教宗影响"
                 ]
         MsgYearlyDevotion {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " {{DLC-only|Yearly devotion}}"
+                , " {{DLC-only|年度奉献度}}"
                 ]
         MsgMonthlyFervor {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " {{DLC-only|Monthly fervor}}"
+                , " {{DLC-only|狂热}}"
                 ]
         MsgChurchPowerModifier {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -3535,7 +3536,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Yearly prestige"
+                , " 年度威望"
                 ]
         MsgMissionaryStrengthVsHeretics {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -3939,7 +3940,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgNumColonies {scriptMessageAmt = _amt}
             -> mconcat
-                [ "拥有至少 "
+                [ "拥有至少"
                 , toMessage (roundNum _amt)
                 , "个殖民地"
                 ]
@@ -4951,7 +4952,7 @@ instance RenderMessage Script ScriptMessage where
         MsgIsInCapitalArea {scriptMessageYn = _yn}
             -> mconcat
                 [ toMessage (ifThenElseT _yn "" "'''不'''")
-                , "位于首都区域"
+                , "位于首都地区"
                 ]
         MsgHasActiveDebate {scriptMessageYn = _yn}
             -> mconcat
@@ -5001,11 +5002,12 @@ instance RenderMessage Script ScriptMessage where
                 , " "
                 , _what
                 ]
-        MsgHasPersonalDeity {scriptMessageWhat = _what}
+        MsgHasPersonalDeity {scriptMessageIcon = _icon, scriptMessageWhat = _what}
             -> mconcat
-                [ "拥有"
+                [ "君主信仰的主神是 "
+                , _icon
+                , " "
                 , _what
-                , "特质"
                 ]
         MsgRulerHasPersonality {scriptMessageWhat = _what}
             -> mconcat
