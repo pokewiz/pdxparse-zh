@@ -888,7 +888,7 @@ instance RenderMessage Script ScriptMessage where
             -> "若不是选帝侯或帝国皇帝，全部省份退出神圣罗马帝国"
         MsgIsJanissaryMod
             -> "（奥斯曼亲兵修正）"
-        MsgGainADM {scriptMessageIcon =ss _icon, scriptMessageAmt = _amt}
+        MsgGainADM {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ gainOrLose _amt
                 , " "
@@ -1278,7 +1278,7 @@ instance RenderMessage Script ScriptMessage where
                 , toMessage (roundNumNoSpace _days)
                 , " "
                 , plural _days "天" "天"
-                , "，并具有一下效果："
+                , "，并具有以下效果："
                 ]
         MsgGainModPow {scriptMessageModid = _modid, scriptMessageType = _type, scriptMessageName = _name, scriptMessagePow = _pow}
             -> mconcat
@@ -2801,7 +2801,7 @@ instance RenderMessage Script ScriptMessage where
                 , toMessage (roundNum _claim)
                 , "正统性的新继承人"
                 ]
-        MsgBuildToForcelimitLand {scriptMessageIcon = _inficon, scriptMessageInfantry = _infantry, scriptMessageCavicon = _cavicon, scriptMessageCavalry = _cavalry, scriptMessageArticon = _articon, scriptMessageArtillery = _artillery}
+        MsgBuildToForcelimitLand {scriptMessageInficon = _inficon, scriptMessageInfantry = _infantry, scriptMessageCavicon = _cavicon, scriptMessageCavalry = _cavalry, scriptMessageArticon = _articon, scriptMessageArtillery = _artillery}
             -> mconcat
                 [ "建造陆军单位至部队上限："
                 , _inficon
@@ -4445,35 +4445,35 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Diplomatic annexation cost"
+                , " 外交吞并花费"
                 ]
         MsgAEImpact {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Aggressive expansion impact"
+                , " 侵略扩张影响"
                 ]
         MsgDiploRep {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Diplomatic reputation"
+                , " 外交声望"
                 ]
         MsgEnvoyTravelTime {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Envoy travel time"
+                , " 使者行程时间"
                 ]
         MsgDiploRelations {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Diplomatic relations"
+                , " 外交关系"
                 ]
         MsgVassalForcelimitContribution {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -4487,245 +4487,245 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Unjustified demands"
+                , " 不正当要求"
                 ]
         MsgInfantryCombatAbility {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Infantry combat ability"
+                , " 步兵作战能力"
                 ]
         MsgCavalryCombatAbility {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Cavalry combat ability"
+                , " 骑兵作战能力"
                 ]
         MsgArtilleryCombatAbility {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Artillery combat ability"
+                , " 炮兵作战能力"
                 ]
         MsgShipDurability {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Ship durability"
+                , " 船只耐久度"
                 ]
         MsgMoraleOfArmies {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourNumSign True) _amt)
-                , " Morale of armies"
+                , " 陆军士气"
                 ]
         MsgMoraleOfNavies {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourNumSign True) _amt)
-                , " Morale of navies"
+                , " 海军士气"
                 ]
         MsgNavalAttrition {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Naval attrition"
+                , " 海军损耗"
                 ]
         MsgDiscipline {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Discipline"
+                , " 训练度"
                 ]
         MsgNationalManpowerMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourNumSign True) _amt)
-                , " National manpower modifier"
+                , " 全国人力修正"
                 ]
         MsgManpowerRecoverySpeed {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourNumSign True) _amt)
-                , " Manpower recovery speed"
+                , " 人力恢复速度"
                 ]
         MsgAvailableMercs {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Available mercenaries"
+                , " 可用雇佣兵数量"
                 ]
         MsgGarrisonSize {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Garrison size"
+                , " 守军数量"
                 ]
         MsgLandAttrition {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Land attrition"
+                , " 陆军损耗"
                 ]
         MsgLandForcelimitMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Land force limit modifier"
+                , " 陆军数量上限修正"
                 ]
         MsgPrestigeDecay {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Prestige decay"
+                , " 威望衰退"
                 ]
         MsgMercCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Mercenary cost"
+                , " 雇佣兵花费"
                 ]
         MsgTechCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Technology cost"
+                , " 科技花费"
                 ]
         MsgPossibleAdvisors {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourNumSign True) _amt)
-                , " Possible advisors"
+                , " 可能的顾问"
                 ]
         MsgReduceInflationCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Reduce inflation cost"
+                , " 减少通货膨胀花费"
                 ]
         MsgLeadersWithoutUpkeep {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourNumSign True) _amt)
-                , " Leader(s)<!-- sic --> without upkeep"
+                , " 无需维护的将领"
                 ]
         MsgAdvisorCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Advisor costs"
+                , " 顾问花费"
                 ]
         MsgCoreCreationCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Core creation cost"
+                , " 造核花费"
                 ]
         MsgMercMaintenance {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Mercenary maintenance modifier"
+                , " 雇佣兵维护费用修正"
                 ]
         MsgADMTechCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Administrative technology cost"
+                , " 行政科技花费"
                 ]
         MsgDIPTechCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Diplomatic technology cost"
+                , " 外交科技花费"
                 ]
         MsgGoodsProducedMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Goods produced modifier"
+                , " 商品产出修正"
                 ]
         MsgNavalLeaderFire {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourNumSign True) _amt)
-                , " Naval leader fire"
+                , " 海军将领火力"
                 ]
         MsgNavalLeaderShock {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourNumSign True) _amt)
-                , " Naval leader shock"
+                , " 海军将领冲击"
                 ]
         MsgPrestigeFromLand {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Prestige from land battles"
+                , " 来自陆战的威望"
                 ]
         MsgPrestigeFromNaval {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Prestige from naval battles"
+                , " 来自海战的威望"
                 ]
         MsgDiplomats {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Diplomats"
+                , " 外交官"
                 ]
         MsgWarExhaustionCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Cost of reducing war exhaustion"
+                , " 减少厌战度花费"
                 ]
         MsgImproveRelations {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Improve relations"
+                , " 改善关系"
                 ]
         MsgProvinceWarscoreCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Province warscore cost"
+                , " 省份战争得分花费"
                 ]
         MsgReducedStabImpacts
             -> "Lowered impact on stability from diplomatic actions"
@@ -4734,84 +4734,84 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign False _amt)
-                , " National unrest"
+                , " 全国叛乱"
                 ]
         MsgYearsOfSeparatism {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign False _amt)
-                , " Years of separatism"
+                , " 年度分裂主义"
                 ]
         MsgAccCultureThreshold {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Accepted culture threshold"
+                , " 可接受文化阈值"
                 ]
         MsgBetterRelationsOverTime {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Better relations over time"
+                , " 负面关系消退速度"
                 ]
         MsgIdeaCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Idea cost"
+                , " 理念花费"
                 ]
         MsgMerchants {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Merchants"
+                , " 商人团"
                 ]
         MsgRecruitmentTime {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Recruitment time"
+                , " 招募时间"
                 ]
         MsgShipbuildingTime {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Shipbuilding time"
+                , " 造船时间"
                 ]
         MsgGlobalTradePower {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Global trade power"
+                , " 全局贸易力量"
                 ]
         MsgEmbargoEff {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Embargo efficiency"
+                , " 禁运效率"
                 ]
         MsgPrivateerEff {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Privateer efficiency"
+                , " 私掠效率"
                 ]
         MsgGlobalSpyDefence {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " National spy defence"
+                , " 全国间谍防御"
                 ]
         MsgMaySabotageReputation
             -> "{{icon|may sabotage reputation|28px}} May [[sabotage reputation]]"
@@ -4820,127 +4820,127 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Spy offense"
+                , " 间谍进攻"
                 ]
         MsgCovertActionRelationImpact {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Covert action relation impact"
+                , " 秘密行动对关系的影响"
                 ]
         MsgMayStudyTech
-            -> "{{icon|may study technology|28px}} May [[study technology]]"
+            -> "{{icon|may study technology|28px}} 需要[[窃取科技]]"
         MsgMaySowDiscontent
-            -> "{{icon|may sow discontent|28px}} May [[sow discontent]]"
+            -> "{{icon|may sow discontent|28px}} 需要[[挑动不满情绪]]"
         MsgMayAgitateForLiberty
-            -> "May [[agitate for liberty]]"
+            -> "需要[[煽动独立]]"
         MsgMayInfiltrateAdministration
-            -> "{{icon|may infiltrate administration|28px}} May [[infiltrate administration]]"
+            -> "{{icon|may infiltrate administration|28px}} 需要[[管理渗透]]"
         MsgRebelSupportEff {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Rebel support efficiency"
+                , " 叛军支持效率"
                 ]
         MsgArmyTraditionDecay {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Army tradition decay"
+                , " 陆军传统衰退"
                 ]
         MsgNavyTraditionDecay {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Navy tradition decay"
+                , " 海军传统衰退"
                 ]
         MsgInfantryCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Infantry cost"
+                , " 步兵花费"
                 ]
         MsgCavalryCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Cavalry cost"
+                , " 骑兵花费"
                 ]
         MsgArtilleryCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Artillery cost"
+                , " 炮兵花费"
                 ]
         MsgMILTechCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Military technology cost"
+                , " 军事科技花费"
                 ]
         MsgHostileCoreCreation {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Hostile core-creation cost on us"
+                , " 敌方国家建立核心成本"
                 ]
         MsgCaravanPower {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Caravan power"
+                , " 商队力量"
                 ]
         MsgLandLeaderFire {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Land leader fire"
+                , " 陆军将领火力"
                 ]
         MsgLandLeaderShock {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Land leader shock"
+                , " 陆军奖励冲击"
                 ]
         MsgLandLeaderManeuver {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Land leader maneuver"
+                , " 陆军将领机动"
                 ]
         MsgLeaderSiege {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Leader siege"
+                , " 将领围攻"
                 ]
         MsgFortDefense {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourPcSign True _amt)
-                , " Fort defense"
+                , " 要塞防御"
                 ]
         MsgFortMaintenance {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Fort maintenance"
+                , " 要塞维护费用"
                 ]
         MsgReinforceSpeed {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -4961,28 +4961,28 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Siege ability"
+                , " 围城能力"
                 ]
         MsgRecoverArmyMoraleSpeed {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Recover army morale speed"
+                , " 陆军士气恢复速度"
                 ]
         MsgTradeRange {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Trade range"
+                , " 贸易范围"
                 ]
         MsgTradeSteering {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Trade steering"
+                , " 贸易引导"
                 ]
         MsgTextIs {scriptMessageWhat = _what}
             -> mconcat
@@ -5670,103 +5670,103 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " Local hostile movement speed"
+                , " 本地敌军移动速度"
                 ]
         MsgLocalInstitutionSpread {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Local institution spread"
+                , " 本地思潮传播"
                 ]
         MsgLocalUnrest {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign False _amt)
-                , " Local unrest"
+                , " 本地叛乱t"
                 ]
         MsgLocalManpowerMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Local manpower modifier"
+                , " 本地人力修正"
                 ]
         MsgLocalMissionaryStrength {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Local missionary strength"
+                , " 本地传教力量"
                 ]
         MsgLocalMonthlyDevastation {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign False _amt)
-                , " Monthly devastation"
+                , " 月度荒废度"
                 ]
         MsgLocalProdEff {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Local production efficiency"
+                , " 本地生产效率"
                 ]
         MsgLocalSettlerIncrease {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Local settler increase"
+                , " 本地移民增加"
                 ]
         MsgLocalStateMaintMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " State maintenance"
+                , " 直属州维护费用修正"
                 ]
         MsgLocalTaxMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Local tax modifier"
-                ]
+                , " 本地税收修正"
+          ]
         MsgLocalTradePower {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Local trade power"
+                , " 本地贸易力量"
                 ]
         MsgLocalTradePowerMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Local trade power modifier"
+                , " 本地贸易力量修正"
                 ]
         MsgMaxPromotedCultures {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Max promoted cultures"
+                , " 最大可接受文化"
                 ]
         MsgMercenaryDiscipline {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Mercenary discipline"
+                , " 雇佣兵训练度"
                 ]
         MsgMeritocracy {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
-                , " Meritocracy is at least "
+                , " 贤能值至少为 "
                 , toMessage (roundNum _amt)
                 ]
         MsgProvTradePowerMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
@@ -5774,77 +5774,77 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Provincial trade power modifier"
+                , " 省份贸易力量修正"
                 ]
         MsgRazingPowerGain {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Razing power gain"
+                , " 掠夺点数获得"
                 ]
         MsgRecoverNavyMoraleSpeed {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Recover navy morale speed"
+                , " 海军士气恢复速度"
                 ]
         MsgStateMaintMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign False) _amt)
-                , " State maintenance"
+                , " 直属州维护费用"
                 ]
         MsgSubjectLibertyDesire {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourPcSign False (negate _amt))
-                , " Liberty desire in subjects"
+                , " 附属国独立倾向"
                 ]
         MsgTaxIncome {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Tax income"
+                , " 税收"
                 ]
         MsgTradePowerAbroad {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Trade power abroad"
+                , " 海外贸易力量"
                 ]
         MsgTradeValueMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Trade value modifier"
+                , " 贸易值修正"
                 ]
         MsgYearlyArmyProfessionalism {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " Yearly army professionalism"
+                , " 年度陆军职业度"
                 ]
         MsgYearlyCorruption {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign False _amt)
-                , " Yearly corruption"
+                , " 年度腐败度"
                 ]
         MsgYearlyMeritocracy {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Yearly meritocracy"
+                , " 年度贤能值"
                 ]
     renderMessage _ _ _ = error "Sorry, non-English localisation not yet supported."
 
