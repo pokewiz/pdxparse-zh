@@ -855,6 +855,20 @@ data ScriptMessage
     | MsgYearlyArmyProfessionalism {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
     | MsgYearlyCorruption {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
     | MsgYearlyMeritocracy {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
+    | MsgAddInnovativenessSmallEffect
+    | MsgAddInnovativenessBigEffect
+    | MsgReduceInnovativenessSmallEffect
+    | MsgReduceInnovativenessBigEffect
+    | MsgAddReformProgressSmallEffect
+    | MsgAddReformProgressMediumEffect
+    | MsgAddReformProgressBigEffect
+    | MsgReduceReformProgressSmallEffect
+    | MsgReduceReformProgressMediumEffect
+    | MsgReduceReformProgressBigEffect
+    | MsgReduceMandateEffect
+    | MsgReduceMandateLargeEffect
+    | MsgReduceMeritocracyEffect
+    | MsgReduceMeritocracyLargeEffect
 
 -- | Whether to default to English localization.
 useEnglish :: [Text] -> Bool
@@ -4814,13 +4828,13 @@ instance RenderMessage Script ScriptMessage where
                 , " 全国间谍防御"
                 ]
         MsgMaySabotageReputation
-            -> "{{icon|may sabotage reputation|28px}} May [[sabotage reputation]]"
+            -> "{{icon|may sabotage reputation|28px}} 需要[[破坏名誉]]"
         MsgSpyOffense {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " 间谍进攻"
+                , " 间谍网建设"
                 ]
         MsgCovertActionRelationImpact {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -4912,7 +4926,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " 陆军奖励冲击"
+                , " 陆军将领冲击"
                 ]
         MsgLandLeaderManeuver {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -4947,14 +4961,14 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourPcSign True _amt)
-                , " Reinforce speed"
+                , " 补充速度"
                 ]
         MsgAttritionForEnemies {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " Attrition for enemies"
+                , " 敌军损耗"
                 ]
         MsgSiegeAbility {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -5322,7 +5336,7 @@ instance RenderMessage Script ScriptMessage where
         MsgCorruption {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
-                , " 通货膨胀至少为 "
+                , " 腐败度至少为 "
                 , toMessage (reducedNum plainNum _amt)
                 ]
         MsgAddIncidentVariableValue {scriptMessageAmt = _amt}
@@ -5355,7 +5369,7 @@ instance RenderMessage Script ScriptMessage where
                 [ gainOrLose _amt
                 , " "
                 , toMessage (colourPc True _amt)
-                , " 天命值"
+                , " {{DLC-only|天命值}}"
                 ]
         MsgAddMandateEffect
             -> "{{add mandate effect}}"
@@ -5684,7 +5698,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign False _amt)
-                , " 本地叛乱t"
+                , " 本地叛乱"
                 ]
         MsgLocalManpowerMod {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -5844,8 +5858,36 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " 年度贤能值"
+                , " {{DLC-only|年度贤能值}}"
                 ]
+        MsgAddInnovativenessSmallEffect
+            -> "{{add innovativeness small effect}}"
+        MsgAddInnovativenessBigEffect
+            -> "{{add innovativeness big effect}}"
+        MsgReduceInnovativenessSmallEffect
+            -> "{{reduce innovativeness small effect}}"
+        MsgReduceInnovativenessBigEffect
+            -> "{{reduce innovativeness big effect}}"
+        MsgAddReformProgressSmallEffect
+            -> "{{add reform progress small effect}}"
+        MsgAddReformProgressMediumEffect
+            -> "{{add reform progress medium effect}}"
+        MsgAddReformProgressBigEffect
+            -> "{{add reform progress big effect}}"
+        MsgReduceReformProgressSmallEffect
+            -> "{{reduce reform progress small effect}}"
+        MsgReduceReformProgressMediumEffect
+            -> "{{reduce reform progress medium effect}}"
+        MsgReduceReformProgressBigEffect
+            -> "{{reduce reform progress big effect}}"
+        MsgReduceMandateEffect
+            -> "{{reduce mandate effect}}"
+        MsgReduceMandateLargeEffect
+            -> "{{reduce mandate large effect}}"
+        MsgReduceMeritocracyEffect
+            -> "{{reduce meritocracy effect}}"
+        MsgReduceMeritocracyLargeEffect
+            -> "{{reduce meritocracy large effect}}"
     renderMessage _ _ _ = error "Sorry, non-English localisation not yet supported."
 
 -- | Message paired with an indentation level.
