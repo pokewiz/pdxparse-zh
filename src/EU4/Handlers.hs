@@ -24,6 +24,7 @@ module EU4.Handlers (
     ,   numeric
     ,   numericOrTag
     ,   numericIconOrTag
+    ,   numericIconChange 
     ,   withFlag 
     ,   withBool
     ,   withFlagOrBool
@@ -99,7 +100,7 @@ import Data.Maybe (isJust, fromMaybe)
 
 import Control.Applicative (liftA2)
 import Control.Arrow (first)
-import Control.Monad (foldM, mplus, forM)
+import Control.Monad (foldM, mplus, forM, join)
 import Data.Foldable (fold)
 import Data.Monoid ((<>))
 
@@ -189,7 +190,7 @@ flag name =
     if isTag name
         then template "flag" . (:[]) <$> getGameL10n name
         else return $ case T.map toUpper name of
-                "ROOT" -> "（我国）" -- will need editing for capitalization in some cases
+                "ROOT" -> "（该国）" -- will need editing for capitalization in some cases
                 "PREV" -> "（前者）"
                 -- Suggestions of a description for FROM are welcome.
                 _ -> Doc.strictText name
@@ -206,7 +207,7 @@ varTags = Tr.fromList . map (first TE.encodeUtf8) $
 isPronoun :: Text -> Bool
 isPronoun s = T.map toLower s `S.member` pronouns where
     pronouns = S.fromList
-        ["我国"
+        ["该国"
         ,"前者"
         ,"所有者"
         ,"控制者"
@@ -267,7 +268,7 @@ pp_mtth = pp_mtth' . foldl' addField newMTTH
             return . mconcat $
                 case myears of
                     Just years ->
-                        [PP.int years, PP.space, Doc.strictText $ plural years "year" "years"]
+                        [PP.int years, PP.space, Doc.strictText $ plural years "年" "年"]
                         ++
                         if hasMonths && hasDays then [",", PP.space]
                         else if hasMonths || hasDays then ["and", PP.space]
@@ -276,7 +277,7 @@ pp_mtth = pp_mtth' . foldl' addField newMTTH
                 ++
                 case mmonths of
                     Just months ->
-                        [PP.int months, PP.space, Doc.strictText $ plural months "month" "months"]
+                        [PP.int months, PP.space, Doc.strictText $ plural months "月" "月"]
                     _ -> []
                 ++
                 case mdays of
@@ -284,7 +285,7 @@ pp_mtth = pp_mtth' . foldl' addField newMTTH
                         (if hasYears && hasMonths then ["and", PP.space]
                          else []) -- if years but no months, already added "and"
                         ++
-                        [PP.int days, PP.space, Doc.strictText $ plural days "day" "days"]
+                        [PP.int days, PP.space, Doc.strictText $ plural days "日" "日"]
                     _ -> []
                 ++
                 (if hasModifiers then
@@ -297,7 +298,7 @@ pp_mtth = pp_mtth' . foldl' addField newMTTH
                     conditions_pp'd <- pp_script conditions
                     return . mconcat $
                         [conditions_pp'd
-                        ,PP.enclose ": '''×" "'''" (Doc.pp_float factor)
+                        ,PP.enclose "：'''×" "'''" (Doc.pp_float factor)
                         ]
                 _ -> do
                     conditions_pp'd <- indentUp (pp_script conditions)
@@ -676,6 +677,20 @@ numericIconBonus the_icon plainmsg yearlymsg [pdx| %_ = !amt |]
                     msgToPP $ plainmsg icont amt
 numericIconBonus _ _ _ stmt = plainMsg $ pre_statement' stmt
 
+-- | Handler for values that use a different message and icon depending on
+-- whether the value is positive or negative.
+numericIconChange :: (EU4Info g, Monad m) =>
+    Text        -- ^ Icon for negative values
+        -> Text -- ^ Icon for positive values
+        -> (Text -> Double -> ScriptMessage) -- ^ Message for negative values
+        -> (Text -> Double -> ScriptMessage) -- ^ Message for positive values
+        -> StatementHandler g m
+numericIconChange negicon posicon negmsg posmsg [pdx| %_ = !amt |]
+    = if amt < 0
+        then msgToPP $ negmsg (iconText negicon) amt
+        else msgToPP $ posmsg (iconText posicon) amt
+numericIconChange _ _ _ _ stmt = plainMsg $ pre_statement' stmt
+
 ----------------------
 -- Text/value pairs --
 ----------------------
@@ -896,59 +911,76 @@ factionInPower stmt = preStatement stmt
 
 -- Modifiers
 
-data Modifier = Modifier {
-        mod_name :: Maybe Text
-    ,   mod_key :: Maybe Text
-    ,   mod_who :: Maybe Text
-    ,   mod_duration :: Maybe Double
-    ,   mod_power :: Maybe Double
+data AddModifier = AddModifier {
+        amod_name :: Maybe Text
+    ,   amod_key :: Maybe Text
+    ,   amod_who :: Maybe Text
+    ,   amod_duration :: Maybe Double
+    ,   amod_power :: Maybe Double
     } deriving Show
-newModifier :: Modifier
-newModifier = Modifier Nothing Nothing Nothing Nothing Nothing
+newAddModifier :: AddModifier
+newAddModifier = AddModifier Nothing Nothing Nothing Nothing Nothing
 
-addModifierLine :: Modifier -> GenericStatement -> Modifier
-addModifierLine apm [pdx| name     = ?name     |] = apm { mod_name = Just name }
-addModifierLine apm [pdx| key      = ?key      |] = apm { mod_key = Just key }
-addModifierLine apm [pdx| who      = ?tag      |] = apm { mod_who = Just tag }
-addModifierLine apm [pdx| duration = !duration |] = apm { mod_duration = Just duration }
-addModifierLine apm [pdx| power    = !power    |] = apm { mod_power = Just power }
+addModifierLine :: AddModifier -> GenericStatement -> AddModifier
+addModifierLine apm [pdx| name     = ?name     |] = apm { amod_name = Just name }
+addModifierLine apm [pdx| key      = ?key      |] = apm { amod_key = Just key }
+addModifierLine apm [pdx| who      = ?tag      |] = apm { amod_who = Just tag }
+addModifierLine apm [pdx| duration = !duration |] = apm { amod_duration = Just duration }
+addModifierLine apm [pdx| power    = !power    |] = apm { amod_power = Just power }
 addModifierLine apm _ = apm -- e.g. hidden = yes
 
 maybeM :: Monad m => (a -> m b) -> Maybe a -> m (Maybe b)
 maybeM f = maybe (return Nothing) (fmap Just . f)
 
-addModifier :: (IsGameData (GameData g),
-                IsGameState (GameState g),
-                Monad m) =>
+addModifier :: (EU4Info g, Monad m) =>
     ScriptMessage -> StatementHandler g m
-addModifier kind stmt@(Statement _ OpEq (CompoundRhs scr)) = msgToPP =<<
-    let modifier = foldl' addModifierLine newModifier scr
-    in if isJust (mod_name modifier) || isJust (mod_key modifier) then do
-        let mkey = mod_key modifier
-            mname = mod_name modifier
+addModifier kind stmt@(Statement _ OpEq (CompoundRhs scr)) =
+    let amod = foldl' addModifierLine newAddModifier scr
+    in if isJust (amod_name amod) || isJust (amod_key amod) then do
+        let mkey = amod_key amod
+            mname = amod_name amod
+        mthemod <- join <$> sequence (getModifier <$> mname) -- Nothing if trade modifier
         tkind <- messageText kind
-        mwho <- maybe (return Nothing) (fmap (Just . Doc.doc2text) . flag) (mod_who modifier)
+        mwho <- maybe (return Nothing) (fmap (Just . Doc.doc2text) . flag) (amod_who amod)
         mname_loc <- maybeM getGameL10n mname
         mkey_loc <- maybeM getGameL10n mkey
-        let mdur = mod_duration modifier
+        let mdur = amod_duration amod
             mname_or_key = maybe mkey Just mname
             mname_or_key_loc = maybe mkey_loc Just mname_loc
+            meffect = modEffects <$> mthemod
+        mpp_meffect <- scope EU4Bonus $ maybeM ppMany meffect
 
-        return $ case mname_or_key of
+        case mname_or_key of
             Just modid ->
                 -- default presented name to mod id
                 let name_loc = fromMaybe modid mname_or_key_loc
-                in case (mwho, mod_power modifier, mdur) of
-                    (Nothing,  Nothing,  Nothing)  -> MsgGainMod modid tkind name_loc
-                    (Nothing,  Nothing,  Just dur) -> MsgGainModDur modid tkind name_loc dur
-                    (Nothing,  Just pow, Nothing)  -> MsgGainModPow modid tkind name_loc pow
-                    (Nothing,  Just pow, Just dur) -> MsgGainModPowDur modid tkind name_loc pow dur
-                    (Just who, Nothing,  Nothing)  -> MsgActorGainsMod modid who tkind name_loc
-                    (Just who, Nothing,  Just dur) -> MsgActorGainsModDur modid who tkind name_loc dur
-                    (Just who, Just pow, Nothing)  -> MsgActorGainsModPow modid who tkind name_loc pow
-                    (Just who, Just pow, Just dur) -> MsgActorGainsModPowDur modid who tkind name_loc pow dur
-            _ -> preMessage stmt -- Must have mod id
-    else return (preMessage stmt)
+                in case (mwho, amod_power amod, mdur, mpp_meffect) of
+                    -- Event modifiers - expect effects
+                    (Nothing,  Nothing,  Nothing, Just pp_effect)  -> do
+                        msghead <- alsoIndent' (MsgGainMod modid tkind name_loc)
+                        return (msghead : pp_effect)
+                    (Nothing,  Nothing,  Just dur, Just pp_effect) -> do
+                        msghead <- alsoIndent' (MsgGainModDur modid tkind name_loc dur)
+                        return (msghead : pp_effect)
+                    (Just who, Nothing,  Nothing, Just pp_effect)  -> do
+                        msghead <- alsoIndent' (MsgActorGainsMod modid who tkind name_loc)
+                        return (msghead : pp_effect)
+                    (Just who, Nothing,  Just dur, Just pp_effect) -> do
+                        msghead <- alsoIndent' (MsgActorGainsModDur modid who tkind name_loc dur)
+                        return (msghead : pp_effect)
+                    -- Trade power modifiers - expect no effects
+                    (Nothing,  Just pow, Nothing, _)  -> msgToPP $ MsgGainModPow modid tkind name_loc pow
+                    (Nothing,  Just pow, Just dur, _) -> msgToPP $ MsgGainModPowDur modid tkind name_loc pow dur
+                    (Just who, Just pow, Nothing, _)  -> msgToPP $ MsgActorGainsModPow modid who tkind name_loc pow
+                    (Just who, Just pow, Just dur, _) -> msgToPP $ MsgActorGainsModPowDur modid who tkind name_loc pow dur
+                    _ -> do
+                        traceM $ "strange modifier spec" ++ case (mkey, mname) of
+                            (Just key, _) -> "：" ++ T.unpack key
+                            (_, Just name) -> "：" ++ T.unpack name
+                            _ -> ""
+                        preStatement stmt
+            _ -> preStatement stmt -- Must have mod id
+    else preStatement stmt
 addModifier _ stmt = preStatement stmt
 
 -- Add core
@@ -1498,8 +1530,8 @@ instance Param UnitType where
     toParam (textRhs -> Just "transport")  = Just UnitTransport
     toParam _ = Nothing
 
---foldCompound :: String -> String -> String -> [(String, Q Type)] -> [CompField] -> Q Exp -> Q [Dec]
-$(foldCompound "buildToForcelimit" "BuildToForcelimit" "btf"
+--buildToForcelimit :: (IsGameState (GameState g), Monad m) => StatementHandler g m
+foldCompound "buildToForcelimit" "BuildToForcelimit" "btf"
     []
     [CompField "infantry" [t|Double|] (Just [|0|]) False
     ,CompField "cavalry" [t|Double|] (Just [|0|]) False
@@ -1537,10 +1569,10 @@ $(foldCompound "buildToForcelimit" "BuildToForcelimit" "btf"
                                             lightIcon _light_ship
                                             gallIcon _galley
                                             transpIcon _transport
-    |])
+    |]
 
---foldCompound :: String -> String -> String -> [(String, Q Type)] -> [CompField] -> Q Exp -> Q [Dec]
-$(foldCompound "addUnitConstruction" "UnitConstruction" "uc"
+--addUnitConstruction :: (IsGameState (GameState g), Monad m) => Text -> StatementHandler g m
+foldCompound "addUnitConstruction" "UnitConstruction" "uc"
     [("extraArg", [t|Text|])]
     [CompField "amount" [t|Double|] Nothing True
     ,CompField "type" [t|UnitType|] Nothing True
@@ -1553,7 +1585,7 @@ $(foldCompound "addUnitConstruction" "UnitConstruction" "uc"
             UnitGalley    -> MsgBuildGalleys    (iconText "galley")
             UnitTransport -> MsgBuildTransports (iconText "transport")
        ) _amount _speed _cost
-    |])
+    |]
 
 -- War
 
@@ -1602,6 +1634,12 @@ hasDlc [pdx| %_ = ?dlc |]
             ,("The Cossacks", "cos")
             ,("Mare Nostrum", "mn")
             ,("Rights of Man", "rom")
+            ,("Mandate of Heaven", "moh")
+            ,("Third Rome", "tr")
+            ,("Cradle of Civilization", "coc")
+            ,("Rule Britannia", "rb")
+            ,("Dharma", "dhr")
+            ,("Golden Century", "goc")
             ]
         dlc_icon = maybe "" iconText mdlc_key
 hasDlc stmt = preStatement stmt
@@ -1888,18 +1926,18 @@ isMonth :: (IsGameData (GameData g),
 isMonth [pdx| %_ = !(num :: Int) |] | num >= 1, num <= 12
     = do
         month_loc <- getGameL10n $ case num of
-            1 -> "January"
-            2 -> "February"
-            3 -> "March"
-            4 -> "April"
-            5 -> "May"
-            6 -> "June"
-            7 -> "July"
-            8 -> "August"
-            9 -> "September"
-            10 -> "October"
-            11 -> "November"
-            12 -> "December"
+            1 -> "一月"
+            2 -> "二月"
+            3 -> "三月"
+            4 -> "四月"
+            5 -> "五月"
+            6 -> "六月"
+            7 -> "七月"
+            8 -> "八月"
+            9 -> "九月"
+            10 -> "十月"
+            11 -> "十一月"
+            12 -> "十二月"
             _ -> error "impossible: tried to localize bad month number"
         msgToPP $ MsgIsMonth month_loc
 isMonth stmt = preStatement stmt

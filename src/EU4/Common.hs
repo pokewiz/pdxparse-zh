@@ -124,6 +124,11 @@ handlersRhsIrrelevant = Tr.fromList
         ,("add_meritocracy_effect" , const (msgToPP MsgAddMeritocracyEffect))
         ,("add_meritocracy_large_effect", const (msgToPP MsgAddMeritocracyLargeEffect))
         ,("add_stability_or_adm_power", const (msgToPP MsgAddStabilityOrAdm))
+        ,("add_innovativeness_small_effect", const (msgToPP MsgAddInnovativenessSmallEffect))
+        ,("add_innovativeness_big_effect", const (msgToPP MsgAddInnovativenessBigEffect))
+        ,("add_reform_progress_small_effect", const (msgToPP MsgAddReformProgressSmallEffect))
+        ,("add_reform_progress_medium_effect", const (msgToPP MsgAddReformProgressMediumEffect))
+        ,("add_reform_progress_big_effect", const (msgToPP MsgAddReformProgressBigEffect))
         ,("cancel_construction"    , const (msgToPP MsgCancelConstruction)) -- Canals
         ,("cb_on_overseas"         , const (msgToPP MsgGainOverseasCB)) -- Full Expansion
         ,("cb_on_primitives"       , const (msgToPP MsgGainPrimitivesCB)) -- Full Exploration
@@ -145,6 +150,15 @@ handlersRhsIrrelevant = Tr.fromList
         ,("reduce_estate_cossacks_loyalty_effect", const (msgToPP MsgReduceCossacksLoyalty))
         ,("reduce_estate_dhimmi_loyalty_effect", const (msgToPP MsgReduceDhimmiLoyalty))
         ,("reduce_estate_nobles_loyalty_effect", const (msgToPP MsgReduceNoblesLoyalty))
+        ,("reduce_innovativeness_small_effect", const (msgToPP MsgReduceInnovativenessSmallEffect))
+        ,("reduce_innovativeness_big_effect", const (msgToPP MsgReduceInnovativenessBigEffect))
+        ,("reduce_reform_progress_small_effect", const (msgToPP MsgReduceReformProgressSmallEffect))
+        ,("reduce_reform_progress_medium_effect", const (msgToPP MsgReduceReformProgressMediumEffect))
+        ,("reduce_reform_progress_big_effect", const (msgToPP MsgReduceReformProgressBigEffect))
+        ,("reduce_mandate_effect", const (msgToPP MsgReduceMandateEffect))
+        ,("reduce_mandate_large_effect", const (msgToPP MsgReduceMandateLargeEffect))
+        ,("reduce_meritocracy_effect", const (msgToPP MsgReduceMeritocracyEffect))
+        ,("reduce_meritocracy_large_effect", const (msgToPP MsgReduceMeritocracyLargeEffect))
         ,("remove_cardinal"        , const (msgToPP MsgLoseCardinal))
         ,("remove_non_electors_emperors_from_empire_effect", const (msgToPP MsgLeaveHRE))
         ,("sea_repair"             , const (msgToPP MsgGainSeaRepair)) -- Full Maritime
