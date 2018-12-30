@@ -3297,6 +3297,7 @@ instance RenderMessage Script ScriptMessage where
         MsgProvinceHasRebels {scriptMessageIcon = _icon, scriptMessageRtype = _rtype}
             -> mconcat
                 [ "省份最有可能的叛军类型是"
+                , " "
                 , _icon
                 , " "
                 , _rtype
@@ -3739,17 +3740,17 @@ instance RenderMessage Script ScriptMessage where
         MsgDevelCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
-                , " {{DLC-only|提升发展度花费|"
-                , toMessage (reducedNum plainNumSign _amt)
-                , "}}"
+                , " "
+                , toMessage (reducedNum (colourPcSign True) _amt)
+                , " 提升发展度花费"
                 ]
         MsgLocalDevelopmentCost {scriptMessageYn = _yn, scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
-                , "{{DLC-only|本地提升发展度花费|"
-                , toMessage (reducedNum plainNumSign _amt)
-                , ifThenElseT _yn "" "|replace=no"
-                , "}}"
+                , " "
+                , toMessage (reducedNum (colourPcSign True) _amt)
+                , ifThenElseT _yn "" ""
+                , "本地提升发展度花费"
                 ]
         MsgGainReligiousCB
             -> "{{icon|cb on religious enemies|28px}} 获得对异教和异端的永久[[宣战理由]]，分别为\"圣战\"和\"清除异端\"。"
