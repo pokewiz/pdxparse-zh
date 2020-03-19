@@ -1363,7 +1363,7 @@ defineAdvisor stmt@[pdx| %_ = @scr |]
         addLine da [pdx| $lhs = %rhs |] = case T.map toLower lhs of
             "type" ->
                 let mthe_type = case rhs of
-                        GenericRhs a_type Nothing -> Just a_type
+                        GenericRhs a_type [] -> Just a_type
                         StringRhs a_type -> Just a_type
                         _ -> Nothing
                 in (\mtype_loc -> da
@@ -1372,13 +1372,13 @@ defineAdvisor stmt@[pdx| %_ = @scr |]
                    <$> maybe (return Nothing) getGameL10nIfPresent mthe_type
             "name" -> return $
                 let mthe_name = case rhs of
-                        GenericRhs a_name Nothing -> Just a_name
+                        GenericRhs a_name [] -> Just a_name
                         StringRhs a_name -> Just a_name
                         _ -> Nothing
                 in da { da_name = mthe_name }
             "discount" -> return $
                 let yn = case rhs of
-                        GenericRhs yn' Nothing -> Just yn'
+                        GenericRhs yn' [] -> Just yn'
                         StringRhs yn' -> Just yn'
                         _ -> Nothing
                 in if yn == Just "yes" then da { da_discount = Just True }
@@ -1392,7 +1392,7 @@ defineAdvisor stmt@[pdx| %_ = @scr |]
             "skill" -> return $ da { da_skill = floatRhs rhs }
             "female" -> return $
                 let yn = case rhs of
-                        GenericRhs yn' Nothing -> Just yn'
+                        GenericRhs yn' [] -> Just yn'
                         StringRhs yn' -> Just yn'
                         _ -> Nothing
                 in if yn == Just "yes" then da { da_female = Just True }
