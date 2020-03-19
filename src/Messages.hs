@@ -5031,7 +5031,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgTextIs {scriptMessageWhat = _what}
             -> mconcat
-                [ "Text is: ''"
+                [ "文本：''"
                 , _what
                 , "''"
                 ]
@@ -5055,12 +5055,12 @@ instance RenderMessage Script ScriptMessage where
             -> "One random tile:"
         MsgGainTrait {scriptMessageIcon = _icon, scriptMessageWhat = _what}
             -> mconcat
-                [ "Gain trait "
+                [ "获得特质 "
                 , _icon
                 , " "
                 , _what
                 ]
-        MsgIsFreeOrTributaryTrigger -> "(THIS) {{is_free_or_tributary_trigger}}"
+        MsgIsFreeOrTributaryTrigger -> "（该国）{{is_free_or_tributary_trigger}}"
         MsgAbsolutism {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
@@ -5906,43 +5906,43 @@ instance RenderMessage Script ScriptMessage where
         MsgAddReformProgressBigEffect
             -> "{{add reform progress big effect}}"
         MsgBoostBureaucratsEffect
-            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|bureaucrats}} Grand Secretariat faction gains '''10''' influence"
+            -> "{{boost faction|bureaucrats}}"
         MsgBoostBureaucratsLargeEffect
-            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|bureaucrats}} Grand Secretariat faction gains '''15''' influence"
+            -> "{{boost faction|bureaucrats|large}}"
         MsgBoostEunuchsEffect
-            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|eunuchs}} Offices of Maritime Trade faction gains '''10''' influence"
+            -> "{{boost faction|eunuchs}}"
         MsgBoostEunuchsLargeEffect
-            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|eunuchs}} Offices of Maritime Trade faction gains '''15''' influence"
+            -> "{{boost faction|eunuchs|large}}"
         MsgBoostTemplesEffect
-            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|temples}} Commanderies of the Five Armies faction gains '''10''' influence"
+            -> "{{boost faction|temples}}"
         MsgBoostTemplesLargeEffect
-            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|temples}} Commanderies of the Five Armies faction gains '''15''' influence"
+            -> "{{boost faction|temples|large}}"
         MsgCheckIfNonStateAdvisorEffect
-            -> "Randomly set a country flag to determine the religion (state, secondary, tertiary, or Jewish) of an advisor based on location of the capital and state religion group"
+            -> "根据首都位置和国教所属宗教组，随机设置一个国家flag用于决定顾问宗教（国教、第二宗教、第三宗教或犹太教）"
         MsgEraseAdvisorFlagsEffect
-            -> "Forget the choice of religion for an advisor"
+            -> "遗忘为顾问选择的宗教"
         MsgIncreaseHeirAdmEffect
-            -> "Heir gains {{icon|adm}} {{green|1}} administrative skill, or gain {{green|50}} administrative power if skill is already 6"
+            -> "继承人获得 {{icon|adm}} {{green|1}} 行政技能，若行政技能已达到 6，则获得 {{green|50}} 行政点数"
         MsgIncreaseHeirDipEffect
-            -> "Heir gains {{icon|dip}} {{green|1}} diplomatic skill, or gain {{green|50}} diplomatic power if skill is already 6"
+            -> "继承人获得 {{icon|dip}} {{green|1}} 外交技能，若外交技能已达到 6，则获得 {{green|50}} 外交点数"
         MsgIncreaseHeirMilEffect
-            -> "Heir gains {{icon|mil}} {{green|1}} military skill, or gain {{green|50}} military power if skill is already 6"
+            -> "继承人获得 {{icon|mil}} {{green|1}} 军事技能，若军事技能已达到 6，则获得 {{green|50}} 军事点数"
         MsgIncreaseLegitimacyMediumEffect
-            -> "Gain {{icon|legitimacy}} {{green|10}} legitimacy, {{icon|horde unity}} {{green|10}} horde unity, {{icon|devotion}} {{green|10}} devotion, or {{icon|republican tradition}} {{green|5}} republican tradition as appropriate"
+            -> "{{increase legitimacy}}"
         MsgIncreaseLegitimacySmallEffect
-            -> "Gain {{icon|legitimacy}} {{green|5}} legitimacy, {{icon|horde unity}} {{green|5}} horde unity, {{icon|devotion}} {{green|5}} devotion, or {{icon|republican tradition}} {{green|2.5}} republican tradition as appropriate"
+            -> "{{increase legitimacy|small}}"
         MsgMoveCapitalEffect
-            -> "Province becomes the new {{icon|capital}} capital. If it was in the empire and the country isn't, it is removed from the empire."
+            -> "省份成为新的 {{icon|capital}} 首都。若省份属于神罗但国家不属于，则省份离开神罗。"
         MsgReduceBureaucratsEffect
-            -> "If DLC Mandate of Heaven is ''not'' active, the Grand Secretariat faction loses 10 influence"
+            -> "{{boost faction|bureaucrats|reduce=yes}}"
         MsgReduceEunuchsEffect
-            -> "If DLC Mandate of Heaven is ''not'' active, the Offices of Maritime Trade faction loses 10 influence"
+            -> "{{boost faction|eunuchs|reduce=yes}}"
         MsgReduceTemplesEffect
-            -> "If DLC Mandate of Heaven is ''not'' active, the Commanderies of the Five Armies faction loses 10 influence"
+            -> "{{boost faction|temples|reduce=yes}}"
         MsgReduceLegitimacyEffect
-            -> "Lose {{icon|legitimacy}} {{red|10}} legitimacy, {{icon|horde unity}} {{red|10}} horde unity, {{icon|devotion}} {{red|10}} devotion, or {{icon|republican tradition}} {{red|5}} republican tradition as appropriate"
+            -> "{{reduce legitimacy}}"
         MsgReduceLegitimacySmallEffect
-            -> "Lose {{icon|legitimacy}} {{red|5}} legitimacy, {{icon|horde unity}} {{red|5}} horde unity, {{icon|devotion}} {{red|5}} devotion, or {{icon|republican tradition}} {{red|2.5}} republican tradition as appropriate"
+            -> "{{reduce legitimacy|small}}"
         MsgReduceReformProgressSmallEffect
             -> "{{reduce reform progress small effect}}"
         MsgReduceReformProgressMediumEffect
@@ -5958,26 +5958,22 @@ instance RenderMessage Script ScriptMessage where
         MsgReduceMeritocracyLargeEffect
             -> "{{reduce meritocracy large effect}}"
         MsgRemoveAdvisorAdmEffect
-            -> "The currently employed administrative advisor leaves the country's court."
+            -> "当前的行政顾问离开了宫廷。"
         MsgDivorceConsortEffect
-            -> "Attempt to divorce the consort. The consort's family may be offended by this, spoiling relations, giving them a casus belli, or angering local nobles."
+            -> "试图与配偶离婚，配偶的家族很可能因此感到愤怒，这会破坏关系并给予他们一个对我们的宣战理由或激怒当地的贵族。"
         MsgAddGovernmentReform { scriptMessageWhat = _what }
             -> mconcat
-                ["Enact government reform "
+                ["实行政府改革 "
                 ,_what
                 ]
         MsgAddCOTLevel { scriptMessageIcon = _icon, scriptMessageAmt = _amt }
             -> mconcat
-                ["Gain a "
+                ["获得一个 "
                 ,_icon
-                ," level "
+                ," 级 "
                 ,toMessage (plainNum _amt)
-                ," Center of Trade"
+                ," 贸易中心"
                 ]
-    renderMessage _ _ _ = error "Sorry, non-English localisation not yet supported."
-
--- | Message paired with an indentation level.
-
     renderMessage _ _ _ = error "Sorry, non-English localisation not yet supported."
 
 -- | Message paired with an indentation level.
