@@ -237,7 +237,7 @@ templateDoc name args = PP.hcat $
 -- | Set text in italics, and wrap in quotation marks. Use this for short
 -- localized strings such as modifier and event names.
 iquotes :: Text -> Doc
-iquotes = PP.enclose "'''“" "”'''" . Doc.strictText
+iquotes = PP.enclose "'''「" "」'''" . Doc.strictText
 
 ---- Set doc in italics.
 --italic :: Doc -> Doc
