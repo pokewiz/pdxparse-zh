@@ -857,6 +857,25 @@ data ScriptMessage
     | MsgYearlyMeritocracy {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
     | MsgAddInnovativenessSmallEffect
     | MsgAddInnovativenessBigEffect
+    | MsgBoostBureaucratsEffect
+    | MsgBoostBureaucratsLargeEffect
+    | MsgBoostEunuchsEffect
+    | MsgBoostEunuchsLargeEffect
+    | MsgBoostTemplesEffect
+    | MsgBoostTemplesLargeEffect
+    | MsgCheckIfNonStateAdvisorEffect
+    | MsgEraseAdvisorFlagsEffect
+    | MsgIncreaseHeirAdmEffect
+    | MsgIncreaseHeirDipEffect
+    | MsgIncreaseHeirMilEffect
+    | MsgIncreaseLegitimacyMediumEffect
+    | MsgIncreaseLegitimacySmallEffect
+    | MsgMoveCapitalEffect
+    | MsgReduceBureaucratsEffect
+    | MsgReduceTemplesEffect
+    | MsgReduceEunuchsEffect
+    | MsgReduceLegitimacyEffect
+    | MsgReduceLegitimacySmallEffect
     | MsgReduceInnovativenessSmallEffect
     | MsgReduceInnovativenessBigEffect
     | MsgAddReformProgressSmallEffect
@@ -869,6 +888,11 @@ data ScriptMessage
     | MsgReduceMandateLargeEffect
     | MsgReduceMeritocracyEffect
     | MsgReduceMeritocracyLargeEffect
+    | MsgRemoveAdvisorAdmEffect
+    | MsgDivorceConsortEffect
+    | MsgADMTechAs {scriptMessageIcon :: Text, scriptMessageWho :: Text}
+    | MsgAddGovernmentReform {scriptMessageWhat :: Text}
+    | MsgAddCOTLevel {scriptMessageIcon :: Text, scriptMessageAmt :: Double}
 
 -- | Whether to default to English localization.
 useEnglish :: [Text] -> Bool
@@ -1878,6 +1902,12 @@ instance RenderMessage Script ScriptMessage where
                 , " 行政科技至少为 "
                 , toMessage (roundNum _amt)
                 , " 级"
+                ]
+        MsgADMTechAs {scriptMessageIcon = _icon, scriptMessageWho = _who}
+            -> mconcat
+                [ _icon
+                , " 行政科技至少等同于 "
+                , _who
                 ]
         MsgArmyTradition {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -4641,7 +4671,7 @@ instance RenderMessage Script ScriptMessage where
             -> mconcat
                 [ _icon
                 , " "
-                , toMessage (reducedNum (colourNumSign True) _amt)
+                , toMessage (colourNumSign True _amt)
                 , " 无需维护的将领"
                 ]
         MsgAdvisorCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
@@ -4947,7 +4977,7 @@ instance RenderMessage Script ScriptMessage where
             -> mconcat
                 [ _icon
                 , " "
-                , toMessage (colourPcSign True _amt)
+                , toMessage (reducedNum (colourPcSign True) _amt)
                 , " 要塞防御"
                 ]
         MsgFortMaintenance {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
@@ -5050,7 +5080,7 @@ instance RenderMessage Script ScriptMessage where
             -> mconcat
                 [ _icon
                 , " "
-                , toMessage (reducedNum (colourNumSign True) _amt)
+                , toMessage (colourNumSign True _amt)
                 , " 最大专制度"
                 ]
         MsgYearlyAbsolutism {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
@@ -5875,6 +5905,44 @@ instance RenderMessage Script ScriptMessage where
             -> "{{add reform progress medium effect}}"
         MsgAddReformProgressBigEffect
             -> "{{add reform progress big effect}}"
+        MsgBoostBureaucratsEffect
+            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|bureaucrats}} Grand Secretariat faction gains '''10''' influence"
+        MsgBoostBureaucratsLargeEffect
+            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|bureaucrats}} Grand Secretariat faction gains '''15''' influence"
+        MsgBoostEunuchsEffect
+            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|eunuchs}} Offices of Maritime Trade faction gains '''10''' influence"
+        MsgBoostEunuchsLargeEffect
+            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|eunuchs}} Offices of Maritime Trade faction gains '''15''' influence"
+        MsgBoostTemplesEffect
+            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|temples}} Commanderies of the Five Armies faction gains '''10''' influence"
+        MsgBoostTemplesLargeEffect
+            -> "If DLC {{icon|moh}} Mandate of Heaven is ''not'' active, the {{icon|temples}} Commanderies of the Five Armies faction gains '''15''' influence"
+        MsgCheckIfNonStateAdvisorEffect
+            -> "Randomly set a country flag to determine the religion (state, secondary, tertiary, or Jewish) of an advisor based on location of the capital and state religion group"
+        MsgEraseAdvisorFlagsEffect
+            -> "Forget the choice of religion for an advisor"
+        MsgIncreaseHeirAdmEffect
+            -> "Heir gains {{icon|adm}} {{green|1}} administrative skill, or gain {{green|50}} administrative power if skill is already 6"
+        MsgIncreaseHeirDipEffect
+            -> "Heir gains {{icon|dip}} {{green|1}} diplomatic skill, or gain {{green|50}} diplomatic power if skill is already 6"
+        MsgIncreaseHeirMilEffect
+            -> "Heir gains {{icon|mil}} {{green|1}} military skill, or gain {{green|50}} military power if skill is already 6"
+        MsgIncreaseLegitimacyMediumEffect
+            -> "Gain {{icon|legitimacy}} {{green|10}} legitimacy, {{icon|horde unity}} {{green|10}} horde unity, {{icon|devotion}} {{green|10}} devotion, or {{icon|republican tradition}} {{green|5}} republican tradition as appropriate"
+        MsgIncreaseLegitimacySmallEffect
+            -> "Gain {{icon|legitimacy}} {{green|5}} legitimacy, {{icon|horde unity}} {{green|5}} horde unity, {{icon|devotion}} {{green|5}} devotion, or {{icon|republican tradition}} {{green|2.5}} republican tradition as appropriate"
+        MsgMoveCapitalEffect
+            -> "Province becomes the new {{icon|capital}} capital. If it was in the empire and the country isn't, it is removed from the empire."
+        MsgReduceBureaucratsEffect
+            -> "If DLC Mandate of Heaven is ''not'' active, the Grand Secretariat faction loses 10 influence"
+        MsgReduceEunuchsEffect
+            -> "If DLC Mandate of Heaven is ''not'' active, the Offices of Maritime Trade faction loses 10 influence"
+        MsgReduceTemplesEffect
+            -> "If DLC Mandate of Heaven is ''not'' active, the Commanderies of the Five Armies faction loses 10 influence"
+        MsgReduceLegitimacyEffect
+            -> "Lose {{icon|legitimacy}} {{red|10}} legitimacy, {{icon|horde unity}} {{red|10}} horde unity, {{icon|devotion}} {{red|10}} devotion, or {{icon|republican tradition}} {{red|5}} republican tradition as appropriate"
+        MsgReduceLegitimacySmallEffect
+            -> "Lose {{icon|legitimacy}} {{red|5}} legitimacy, {{icon|horde unity}} {{red|5}} horde unity, {{icon|devotion}} {{red|5}} devotion, or {{icon|republican tradition}} {{red|2.5}} republican tradition as appropriate"
         MsgReduceReformProgressSmallEffect
             -> "{{reduce reform progress small effect}}"
         MsgReduceReformProgressMediumEffect
@@ -5889,6 +5957,27 @@ instance RenderMessage Script ScriptMessage where
             -> "{{reduce meritocracy effect}}"
         MsgReduceMeritocracyLargeEffect
             -> "{{reduce meritocracy large effect}}"
+        MsgRemoveAdvisorAdmEffect
+            -> "The currently employed administrative advisor leaves the country's court."
+        MsgDivorceConsortEffect
+            -> "Attempt to divorce the consort. The consort's family may be offended by this, spoiling relations, giving them a casus belli, or angering local nobles."
+        MsgAddGovernmentReform { scriptMessageWhat = _what }
+            -> mconcat
+                ["Enact government reform "
+                ,_what
+                ]
+        MsgAddCOTLevel { scriptMessageIcon = _icon, scriptMessageAmt = _amt }
+            -> mconcat
+                ["Gain a "
+                ,_icon
+                ," level "
+                ,toMessage (plainNum _amt)
+                ," Center of Trade"
+                ]
+    renderMessage _ _ _ = error "Sorry, non-English localisation not yet supported."
+
+-- | Message paired with an indentation level.
+
     renderMessage _ _ _ = error "Sorry, non-English localisation not yet supported."
 
 -- | Message paired with an indentation level.
