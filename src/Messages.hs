@@ -999,7 +999,7 @@ instance RenderMessage Script ScriptMessage where
                 , _icon
                 , " "
                 , toMessage (colourNum True _amt)
-                , " 部落统一度"
+                , " 游牧团结"
                 ]
         MsgGainImperialAuthority {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -1971,7 +1971,7 @@ instance RenderMessage Script ScriptMessage where
         MsgHordeUnity {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
-                , " 部落统一度至少为 "
+                , " 游牧团结至少为 "
                 , toMessage (roundNum _amt)
                 ]
         MsgYearlyHordeUnity {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
@@ -1979,7 +1979,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " 年度部落统一度"
+                , " 年度游牧团结"
                 ]
         MsgKarma {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -3904,7 +3904,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " <!-- idea: "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " --> 宗教统一度至少为 "
+                , " --> 宗教统一至少为 "
                 , toMessage (reducedNum (colourPc True) _amt)
                 ]
         MsgReligiousUnityBonus {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
@@ -3912,7 +3912,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " 宗教统一度"
+                , " 宗教统一"
                 ]
         MsgHasADM {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -4012,7 +4012,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgLegitimacyOrHordeUnity {scriptMessageAmt = _amt}
             -> mconcat
-                [ "{{icon|legitimacy}} 正统性或 {{icon|horde unity}} 游牧统一度至少为 "
+                [ "{{icon|legitimacy}} 正统性或 {{icon|horde unity}} 游牧团结至少为 "
                 , toMessage (roundNum _amt)
                 ]
         MsgCheckVariable {scriptMessageIcon = __icon, scriptMessageWhat = _what, scriptMessageAmt = _amt}
