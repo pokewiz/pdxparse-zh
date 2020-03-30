@@ -4504,7 +4504,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (colourNumSign True _amt)
-                , " 外交声望"
+                , " 外交声誉"
                 ]
         MsgEnvoyTravelTime {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
