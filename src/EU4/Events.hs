@@ -41,8 +41,8 @@ import SettingsTypes ( PPT, Settings (..), Game (..)
                      , hoistErrors, hoistExceptions)
 
 -- | Empty event value. Starts off Nothing/empty everywhere.
-newEU4Event :: EU4Scope -> EU4Event
-newEU4Event escope = EU4Event Nothing Nothing [] escope Nothing Nothing Nothing Nothing False Nothing Nothing Nothing
+newEU4Event :: EU4Scope -> FilePath -> EU4Event
+newEU4Event escope path = EU4Event Nothing Nothing [] escope Nothing Nothing Nothing Nothing False Nothing Nothing path
 -- | Empty event option vaule. Starts off Nothing everywhere.
 newEU4Option :: EU4Option
 newEU4Option = EU4Option Nothing Nothing Nothing Nothing
@@ -80,7 +80,7 @@ writeEU4Events = do
     events <- getEvents
     let pathedEvents :: [Feature EU4Event]
         pathedEvents = map (\evt -> Feature {
-                                    featurePath = eu4evt_path evt
+                                    featurePath = Just (eu4evt_path evt)
                                 ,   featureId = eu4evt_id evt
                                 ,   theFeature = Right evt })
                             (HM.elems events)
@@ -105,17 +105,16 @@ parseEU4Event stmt@[pdx| %left = %right |] = case right of
                     _ -> Nothing
             in case mescope of
                 Nothing -> throwError $ "unrecognized event type " <> etype
-                Just escope -> do
-                    mevt <- hoistErrors (foldM eventAddSection (Just (newEU4Event escope)) parts)
+                Just escope -> withCurrentFile $ \file -> do
+                    mevt <- hoistErrors (foldM eventAddSection (Just (newEU4Event escope file)) parts)
                     case mevt of
                         Left err -> return (Left err)
                         Right Nothing -> return (Right Nothing)
-                        Right (Just evt) -> withCurrentFile $ \file ->
-                            let pathedEvt = evt { eu4evt_path = Just file }
-                            in  if isJust (eu4evt_id pathedEvt)
-                                then return (Right (Just pathedEvt))
-                                else return (Left $ "error parsing events in " <> T.pack file
-                                             <> ": missing event id")
+                        Right (Just evt) ->
+                            if isJust (eu4evt_id evt)
+                            then return (Right (Just evt))
+                            else return (Left $ "error parsing events in " <> T.pack file
+                                         <> ": missing event id")
 
     _ -> return (Right Nothing)
 parseEU4Event _ = throwError "operator other than ="
@@ -185,6 +184,7 @@ eventAddSection mevt stmt = sequence (eventAddSection' <$> mevt <*> pure stmt) w
 --    eventAddSection' evt stmt@[pdx| picture = %rhs |] = case textRhs rhs of
 --        Just pic -> return evt { eu4evt_picture = Just pic }
 --        _ -> throwError "bad picture"
+    eventAddSection' evt stmt@[pdx| goto = %rhs |] = return evt
     eventAddSection' evt stmt@[pdx| trigger = %rhs |] = case rhs of
         CompoundRhs trigger_script -> case trigger_script of
             [] -> return evt -- empty, treat as if it wasn't there
@@ -208,6 +208,7 @@ eventAddSection mevt stmt = sequence (eventAddSection' <$> mevt <*> pure stmt) w
         _ -> throwError "bad option"
     eventAddSection' evt stmt@[pdx| fire_only_once = %_ |] = return evt -- do nothing
     eventAddSection' evt stmt@[pdx| major = %_ |] = return evt -- do nothing
+    eventAddSection' evt stmt@[pdx| major_trigger = %_ |] = return evt -- do nothing
     eventAddSection' evt stmt@[pdx| hidden = %rhs |]
         | GenericRhs "yes" [] <- rhs = return evt { eu4evt_hide_window = True }
         | GenericRhs "no"  [] <- rhs = return evt { eu4evt_hide_window = False }
@@ -254,7 +255,7 @@ ppDescs _ [EU4EvtDescSimple key] = ("| event_text = " <>) . Doc.strictText . Doc
 ppDescs _ descs = ("| cond_event_text = " <>) . PP.vsep <$> mapM ppDesc descs where
     ppDesc (EU4EvtDescSimple key) = ("Otherwise:<br>:" <>) <$> fmtDesc key
     ppDesc (EU4EvtDescConditional scr key) = mconcat <$> sequenceA
-        [pure "当满足以下条件时显示以下事件描述：", pure PP.line
+        [pure "The following description is used if:", pure PP.line
         ,imsg2doc =<< ppMany scr, pure PP.line
         ,pure ":", fmtDesc key
         ]
@@ -271,7 +272,7 @@ pp_event :: forall g m. (EU4Info g, MonadError Text m) =>
 pp_event evt = case (eu4evt_id evt
                     ,eu4evt_title evt
                     ,eu4evt_options evt) of
-    (Just eid, Just title, Just options) -> do
+    (Just eid, Just title, Just options) -> setCurrentFile (eu4evt_path evt) $ do
         -- Valid event
         version <- gets (gameVersion . getSettings)
         (conditional, options_pp'd) <- pp_options (eu4evt_hide_window evt) eid options
@@ -311,7 +312,7 @@ pp_event evt = case (eu4evt_id evt
             -- scripts that trigger them with a probability based on a
             -- weight (e.g. on_bi_yearly_pulse).
             (if isTriggeredOnly then
-                ["| triggered only = （请将触发条件移至这里）", PP.line
+                ["| triggered only = (please describe trigger here)", PP.line
                 ]
                 ++ maybe [] (:[PP.line]) mmtth_pp'd
             else []) ++
@@ -324,7 +325,7 @@ pp_event evt = case (eu4evt_id evt
                     ,"* Unknown (Missing MTTH and is_triggered_only)", PP.line]
                 Just mtth_pp'd ->
                     ["| mtth = ", PP.line
-                    ,mtth_pp'd]) ++
+                    ,mtth_pp'd, PP.line]) ++
             immediate_pp'd ++
             (if conditional then ["| option conditions = yes", PP.line] else []) ++
             -- option_conditions = no (not implemented yet)
@@ -370,9 +371,9 @@ pp_option evtid hidden triggered opt = do
                 ,"| effect =", PP.line, effects_pp'd, PP.line]
                 ++ (if triggered then
                         maybe
-                            ["| trigger = 总是可用：", PP.line] -- no trigger
+                            ["| trigger = always", PP.line] -- no trigger
                         (\trigger_pp'd ->
-                            ["| trigger = 满足则可用：", PP.line -- trigger
+                            ["| trigger = ", PP.line -- trigger
                             ,trigger_pp'd, PP.line]
                         ) mtrigger_pp'd
                     else [])
