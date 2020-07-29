@@ -312,7 +312,7 @@ pp_event evt = case (eu4evt_id evt
             -- scripts that trigger them with a probability based on a
             -- weight (e.g. on_bi_yearly_pulse).
             (if isTriggeredOnly then
-                ["| triggered only = (please describe trigger here)", PP.line
+                ["| triggered only = （请在这里描述触发条件）", PP.line
                 ]
                 ++ maybe [] (:[PP.line]) mmtth_pp'd
             else []) ++

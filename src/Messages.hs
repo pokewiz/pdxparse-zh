@@ -1342,7 +1342,7 @@ instance RenderMessage Script ScriptMessage where
                 , toMessage (iquotes _name)
                 , "， <!-- "
                 , _modid
-                , " --> 并具有以下效果："
+                , " --> 并给予以下效果："
                 ]
         MsgGainModDur {scriptMessageModid = _modid, scriptMessageType = _type, scriptMessageName = _name, scriptMessageDays = _days}
             -> mconcat
@@ -1352,17 +1352,18 @@ instance RenderMessage Script ScriptMessage where
                 , toMessage (iquotes _name)
                 , " <!-- "
                 , _modid
-                , " --> 直到 "
+                , " --> 持续"
                 , if (_days < 0)
                     then if _type == "ruler"
-                        then "当前的统治者任期结束"
-                        else "游戏结束"
+                        then "至当前的统治者任期结束"
+                        else "至游戏结束"
                     else mconcat
-                        [ toMessage (roundNumNoSpace _days)
+                        [ " " 
+                        , toMessage (roundNumNoSpace _days)
                         , " "
-                        , plural _days "day" "days"
+                        , plural _days "天" "天"
                         ]
-                , ", giving the following effects:"
+                , "，并给予以下效果："
                 ]
         MsgGainModPow {scriptMessageModid = _modid, scriptMessageType = _type, scriptMessageName = _name, scriptMessagePow = _pow}
             -> mconcat
@@ -1384,9 +1385,9 @@ instance RenderMessage Script ScriptMessage where
                 , toMessage (iquotes _name)
                 , " <!-- "
                 , _modid
-                , " --> ("
+                , " -->（"
                 , toMessage (colourNumSign True _pow)
-                , " Power) for "
+                , "点数） "
                 , toMessage (plainNum _days)
                 , " "
                 , plural _days "天" "天"
@@ -1400,7 +1401,7 @@ instance RenderMessage Script ScriptMessage where
                 , toMessage (iquotes _name)
                 , ", <!-- "
                 , _modid
-                , " --> 提供以下效果："
+                , " --> 给予以下效果："
                 ]
         MsgActorGainsModDur {scriptMessageModid = _modid, scriptMessageWho = _who, scriptMessageType = _type, scriptMessageName = _name, scriptMessageDays = _days}
             -> mconcat
@@ -1415,7 +1416,7 @@ instance RenderMessage Script ScriptMessage where
                 , toMessage (plainNum _days)
                 , " "
                 , plural _days "天" "天"
-                , "，提供以下效果："
+                , "，给予以下效果："
                 ]
         MsgActorGainsModPow {scriptMessageModid = _modid, scriptMessageWho = _who, scriptMessageType = _type, scriptMessageName = _name, scriptMessagePow = _pow}
             -> mconcat
@@ -1460,16 +1461,16 @@ instance RenderMessage Script ScriptMessage where
             -> mconcat
                 [ "移除"
                 , _kind
-                , " ''\""
+                , " '''\"「"
                 , _name
-                , "\"'' <!-- "
+                , "\"」''' <!-- "
                 , _modid
                 , " -->"
                 ]
         MsgAllOf
             -> "全部："
         MsgFROM
-            -> "FROM"
+            -> "前者"
         MsgROOT
             -> "ROOT"
         MsgROOTCountry
@@ -1677,8 +1678,9 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgContinentIsAs {scriptMessageWhat = _what}
             -> mconcat
-                [ "Continent is the same as "
+                [ "和"
                 , _what
+                , "所在大陆相同"
                 ]
         MsgCultureIs {scriptMessageWhat = _what}
             -> mconcat
@@ -2191,9 +2193,9 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgRulerMIL {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
-                [ "君主的 "
+                [ "统治者的 "
                 , _icon
-                , " 军事技能至少为 "
+                , " 军事能力至少为 "
                 , toMessage (roundNum _amt)
                 ]
         MsgMILTech {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
@@ -2218,7 +2220,7 @@ instance RenderMessage Script ScriptMessage where
                 , " "
                 , toMessage (roundNum _amt)
                 , " "
-                , plural _amt "个主教" "个主教"
+                , plural _amt "个枢机主教" "个枢机主教"
                 ]
         MsgNumColonists {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -2462,7 +2464,7 @@ instance RenderMessage Script ScriptMessage where
         MsgGainPermanentClaimCountry {scriptMessageWho = _who}
             -> mconcat
                 [ _who
-                , "该省永久宣称"
+                , "获得该省永久宣称"
                 ]
         MsgGainPermanentClaimProvince {scriptMessageWhere = _where}
             -> mconcat
@@ -2794,6 +2796,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _who
                 , "获得对该国的宣战理由 "
                 , _cbtype
+                , " "
                 , toMessage (roundNum _months)
                 , " 个月"
                 ]
@@ -2900,7 +2903,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgAddOpinion {scriptMessageModid = _modid, scriptMessageWhat = _what, scriptMessageWhom = _whom}
             -> mconcat
-                [ "获得对 "
+                [ "获得对"
                 , " <!-- "
                 , _modid
                 , " -->"
@@ -3405,11 +3408,11 @@ instance RenderMessage Script ScriptMessage where
                 , "（优惠50%）"
                 ]
         MsgRebelLeaderRuler
-            -> "叛军将领成为该国的新君主"
+            -> "叛军将领成为该国的新统治者"
         MsgNewRuler {scriptMessageRegent = _regent}
             -> mconcat
                 [ "新的"
-                , toMessage (ifThenElseT _regent "摄政会议" "君主")
+                , toMessage (ifThenElseT _regent "摄政会议" "统治者")
                 , "掌权了"
                 ]
         MsgNewRulerLeader {scriptMessageRegent = _regent, scriptMessageName = _name}
@@ -3417,28 +3420,28 @@ instance RenderMessage Script ScriptMessage where
                 [ "名为"
                 , _name
                 , "的将领成为了"
-                , toMessage (ifThenElseT _regent "摄政会议" "君主")
+                , toMessage (ifThenElseT _regent "摄政会议" "统治者")
                 ]
         MsgNewRulerAttribs {scriptMessageRegent = _regent}
             -> mconcat
                 [ "新的"
-                , toMessage (ifThenElseT _regent "摄政会议" "君主")
-                , "掌权并拥有以下君主能力："
+                , toMessage (ifThenElseT _regent "摄政会议" "统治者")
+                , "掌权并拥有以下统治者能力："
                 ]
         MsgNewRulerLeaderAttribs {scriptMessageRegent = _regent, scriptMessageName = _name}
             -> mconcat
                 [ "名为"
                 , _name
                 , "的将领成为了"
-                , toMessage (ifThenElseT _regent "摄政会议" "君主")
-                , "并拥有以下君主能力："
+                , toMessage (ifThenElseT _regent "摄政会议" "统治者")
+                , "并拥有以下统治者能力："
                 ]
         MsgLeaderRuler {scriptMessageRegent = _regent, scriptMessageName = _name}
             -> mconcat
                 [ "名为"
                 , _name
                 , "的将领作为"
-                , toMessage (ifThenElseT _regent "摄政会议" "君主")
+                , toMessage (ifThenElseT _regent "摄政会议" "统治者")
                 , "掌权了"
                 ]
         MsgNewRulerName {scriptMessageName = _name}
@@ -3496,7 +3499,7 @@ instance RenderMessage Script ScriptMessage where
                 ]
         MsgNewRulerFixed {scriptMessageAdm = _adm, scriptMessageDip = _dip, scriptMessageMil = _mil}
             -> mconcat
-                [ "一个拥有固定能力的君主掌权并拥有 {{icon|adm}} "
+                [ "一个拥有固定能力的统治者掌权并拥有 {{icon|adm}} "
                 , toMessage (roundNum _adm)
                 , ", {{icon|dip}} "
                 , toMessage (roundNum _dip)
@@ -3985,14 +3988,14 @@ instance RenderMessage Script ScriptMessage where
             -> mconcat
                 [ _icon
                 , " "
-                , toMessage (reducedNum (colourPcSign True) _amt)
+                , toMessage (reducedNum (colourPcSign False) _amt)
                 , " 提升发展度花费"
                 ]
         MsgLocalDevelopmentCost {scriptMessageYn = _yn, scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
                 [ _icon
                 , " "
-                , toMessage (reducedNum (colourPcSign True) _amt)
+                , toMessage (reducedNum (colourPcSign False) _amt)
                 , ifThenElseT _yn "" ""
                 , " 本地提升发展度花费"
                 ]
@@ -4024,7 +4027,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " 传教力量"
+                , " 传教强度"
                 ]
         MsgToleranceHeathen {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -4099,7 +4102,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " 传教士力量对异端"
+                , " 对异端传教强度"
                 ]
         MsgCultureConvCost {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -5974,7 +5977,7 @@ instance RenderMessage Script ScriptMessage where
                 [ _icon
                 , " "
                 , toMessage (reducedNum (colourPcSign True) _amt)
-                , " 本地传教力量"
+                , " 本地传教强度"
                 ]
         MsgLocalMonthlyDevastation {scriptMessageIcon = _icon, scriptMessageAmt = _amt}
             -> mconcat
@@ -6186,8 +6189,9 @@ instance RenderMessage Script ScriptMessage where
             -> "试图与配偶离婚，配偶的家族很可能因此感到愤怒，这会破坏关系并给予他们一个对我们的宣战理由或激怒当地的贵族。"
         MsgAddGovernmentReform { scriptMessageWhat = _what }
             -> mconcat
-                ["实行政府改革 "
+                ["实行政府改革「"
                 ,_what
+                ,"」"
                 ]
         MsgAddCOTLevel { scriptMessageIcon = _icon, scriptMessageAmt = _amt }
             -> mconcat
